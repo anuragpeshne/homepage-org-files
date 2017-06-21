@@ -64,9 +64,9 @@ This is part 9 of a series of tutorial to Vim. You can read [[./8.org][Part 8 he
 *** Using ~substitute~
     One way is to use ~substitute~. We can /capture/ the next character, using ~.~,
     after a '.' and make it uppercase.  You can pass in ~\L~ to make a character
-    lower case in substitute:
+    lower case and ~\U~ to make it upper case in substitute:
     #+BEGIN_SRC viml
-    :%s/\. \(.\)/\L\1/g
+    :%s/\. \(.\)/. \U\1/g
     #+END_SRC
     - the ~\.~ will match literal '.'
     - ~\(.\)~ will match and capture any character.
@@ -85,71 +85,71 @@ This is part 9 of a series of tutorial to Vim. You can read [[./8.org][Part 8 he
     - =~= to toggle the case, in this case, it will make it uppercase.
     - Hit ~q~ again to stop recording.
     - ~@t~ to play the macro.
-      #+CAPTION: Macro for /titlelizing/ the paragraph
+      #+CAPTION: Macro for /titlelizing/ the paragraph, view bigger [[https://www.youtube.com/watch?v=9qyFNLtkxRk][here]]
       [[file:../../assets/vim/macro1.gif]]
 
     - You can execute macro stored in ~t~ 100 number of times using ~100@t~
     - You can also execute last macro again using ~@@~.
 
-*** One more time
-    Let's consider one more example where macros can prove very handy. Say we have
-    a 25 line csv file and we want to combine 2nd and 4th column.
-    #+BEGIN_EXAMPLE
-    1,Aba,931 872,Nigeria
-    2,Abeokuta,612 277,Nigeria
-    3,Abidjan,3 796 677,Ivory Coast
-    4,Abu Dhabi,619 316,United Arab Emirates
-    5,Acapulco,658 347,Mexico
-    6,Accra,2 029 143,Ghana
-    7,Adana,1 271 894,Turkey
-    8,ad-Dammam,793 553,Saudi Arabia
-    9,Addis Abeba,2 823 167,Ethiopia
-    10,Adelaide,1 076 969,Australia
-    11,Aden,625 361,Yemen
-    12,Agadir,718 498,Morocco
-    13,Agra,1 475 091,India
-    14,Aguascalientes,671 584,Mexico
-    15,Ahmadabad,3 769 846,India
-    16,Ahvaz,841 145,Iran
-    17,Ajmer,525 927,India
-    18,al-Basrah,2 141 270,Iraq
-    19,Aleppo,1 626 218,Syria
-    20,Alexandria,3 865 502,Egypt
-    21,Algiers,2 029 936,Algeria
-    22,al-H_artum Bah?ri,1 626 638,Sudan
-    23,al-H?udaydah,677 315,Yemen
-    24,Aligarh,775 694,India
-    25,Allahabad,1 094 199,India
-    #+END_EXAMPLE
+** One more time
+   Let's consider one more example where macros can prove very handy. Say we have
+   a 25 line csv file and we want to combine 2nd and 4th column.
+   #+BEGIN_EXAMPLE
+   1,Aba,931 872,Nigeria
+   2,Abeokuta,612 277,Nigeria
+   3,Abidjan,3 796 677,Ivory Coast
+   4,Abu Dhabi,619 316,United Arab Emirates
+   5,Acapulco,658 347,Mexico
+   6,Accra,2 029 143,Ghana
+   7,Adana,1 271 894,Turkey
+   8,ad-Dammam,793 553,Saudi Arabia
+   9,Addis Abeba,2 823 167,Ethiopia
+   10,Adelaide,1 076 969,Australia
+   11,Aden,625 361,Yemen
+   12,Agadir,718 498,Morocco
+   13,Agra,1 475 091,India
+   14,Aguascalientes,671 584,Mexico
+   15,Ahmadabad,3 769 846,India
+   16,Ahvaz,841 145,Iran
+   17,Ajmer,525 927,India
+   18,al-Basrah,2 141 270,Iraq
+   19,Aleppo,1 626 218,Syria
+   20,Alexandria,3 865 502,Egypt
+   21,Algiers,2 029 936,Algeria
+   22,al-H_artum Bah?ri,1 626 638,Sudan
+   23,al-H?udaydah,677 315,Yemen
+   24,Aligarh,775 694,India
+   25,Allahabad,1 094 199,India
+   #+END_EXAMPLE
 
-    One way of doing it would be:
-    - ~qt~ to start recording macro in register ~t~.
-    - With cursor on line 1, column 1, press ~3f,~ to jump to last column of csv file.
-    - ~w~ to read first character
-    - ~d$~ to delete till /end of line/
-      - ~dw~ would have worked if the country name were single word. (~dw~ won't
-        work for /Saudi Arabia/)
-    - ~0~ to get to start of line
-    - ~2f,~ to get to end of 2nd column
-    - ~i~ to get to insert mode
-    - ~<space>~
-    - ~<esc>~ to get into normal mode.
-    - ~p~ to paste the fourth column.
-    - ~$~ to goto end of line
-    - ~x~ to delete the trailing ','
-    - and finally ~j~ or ~<down arrow>~ to come to next line
-    - ~0~ to reset position to 0th column in new line
-    - ~q~ to stop recording
-    - ~24@t~ to play the macro 24 times.
+   One way of doing it would be:
+   - ~qt~ to start recording macro in register ~t~.
+   - With cursor on line 1, column 1, press ~3f,~ to jump to last column of csv file.
+   - ~w~ to read first character
+   - ~d$~ to delete till /end of line/
+     - ~dw~ would have worked if the country name were single word. (~dw~ won't
+       work for /Saudi Arabia/)
+   - ~0~ to get to start of line
+   - ~2f,~ to get to end of 2nd column
+   - ~i~ to get to insert mode
+   - ~<space>~
+   - ~<esc>~ to get into normal mode.
+   - ~p~ to paste the fourth column.
+   - ~$~ to goto end of line
+   - ~x~ to delete the trailing ','
+   - and finally ~j~ or ~<down arrow>~ to come to next line
+   - ~0~ to reset position to 0th column in new line
+   - ~q~ to stop recording
+   - ~24@t~ to play the macro 24 times.
 
-      #+CAPTION: Macro for merging csv column
-      [[file:../../assets/vim/macro2.gif]]
+     #+CAPTION: Macro for merging csv column, view bigger [[https://www.youtube.com/watch?v=9qyFNLtkxRk][here]]
+     [[file:../../assets/vim/macro2.gif]]
 
-    - This is not the most efficient way of doing it, but this illustrates
-      that you can record everything in a macro: right from every motion command
-      to changing modes.
-    - In fact, you can have nested macros that is, while recording a macro you can
-      summon another macro.
+   - This is not the most efficient way of doing it, but this illustrates
+     that you can record everything in a macro: right from every motion command
+     to changing modes.
+   - In fact, you can have nested macros that is, while recording a macro you can
+     summon another macro.
 
 ** Achievement Unlocked: Sublime
    And thus, withing 9 parts you have reached a /sublime/ level. You are now slowly
@@ -159,6 +159,9 @@ This is part 9 of a series of tutorial to Vim. You can read [[./8.org][Part 8 he
    extensive keyboard mappings available in Vim. We won't stop here, in next parts
    we will cover more features which will demonstrate why Vim is not your average
    text editor.
+
+** TODO One more thing: ~.~ (Repeat Command)
+   Repeat command is similar to macro, in the sense that it repeats the last change.
 
 * Summary
   | Command       | Comment                                       |

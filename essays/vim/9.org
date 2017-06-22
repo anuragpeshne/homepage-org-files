@@ -40,7 +40,7 @@ This is part 9 of a series of tutorial to Vim. You can read [[./8.org][Part 8 he
   #+END_QUOTE
   Here we'll see keyboard macros: you type in a few keystrokes and computer will type
   a lot for you based on what you taught it. A small example will illustrate this better,
-  but before we get to the exaple, let me introduce to you another handy operator.
+  but before we get to the example, let me introduce to you another handy operator.
 
 ** =~= (Tilde)
    =~= will toggle the case of character below cursor. Can be very handy while writing
@@ -68,7 +68,7 @@ This is part 9 of a series of tutorial to Vim. You can read [[./8.org][Part 8 he
     #+BEGIN_SRC viml
     :%s/\. \(.\)/. \U\1/g
     #+END_SRC
-    - the ~\.~ will match literal '.'
+    - the pattern ~\.~ will match literal '.'
     - ~\(.\)~ will match and capture any character.
 
 *** Now /Recording/
@@ -152,7 +152,7 @@ This is part 9 of a series of tutorial to Vim. You can read [[./8.org][Part 8 he
      summon another macro.
 
 ** Achievement Unlocked: Sublime
-   And thus, withing 9 parts you have reached a /sublime/ level. You are now slowly
+   And thus, within 9 parts you have reached a /sublime/ level. You are now slowly
    , without noticing, becoming a power user of Vim. All the basic operations which
    you perform daily must have been already covered. Macros in Vim are one the most
    powerful features which you will encounter in any editor, partly because of the
@@ -160,18 +160,47 @@ This is part 9 of a series of tutorial to Vim. You can read [[./8.org][Part 8 he
    we will cover more features which will demonstrate why Vim is not your average
    text editor.
 
-** TODO One more thing: ~.~ (Repeat Command)
-   Repeat command is similar to macro, in the sense that it repeats the last change.
+** One more thing: ~.~ (Repeat Command)
+   Repeat command is similar to macro, in the sense that it repeats the last change
+   when ~.~ is pressed. It's like every change is stored in ~.~ register as a macro.
+   ~.~ command can be used as light weight macro. But ~.~ can capture only /simple/
+   changes. I have experienced that it captures all the keystrokes in insert mode,
+   but as soon as we have one keystroke in normal mode, it stops recording.
+
+   To demonstrate this, let's do slightly changed version of /title-lize/ example,
+   this time we want to change 'apple' to 'orange'. While this can be easily done
+   using substitute command, using ~,~ and ~n~ can make it more iterative and require
+   less typing. But before we get to actual example, let me introduce to one more
+   way of switching to /insert/ mode.
+
+*** ~c~
+    ~c~ takes in motion key, like ~w~ or ~$~, deletes the range specified and puts
+    us into insert mode. It is essentially combination of ~d~ and ~i~. You can remember
+    it by thinking of it as /change/ command.
+
+    Now we can come back to out apple to orange example:
+   - Without recording keystrokes, directly search for 'apple'
+   - hit ~cw~ to /change/ the word
+   - type in 'orange'
+   - ~<esc>~ to return to normal mode
+   - now you can hit ~n~ to jump to next instance of 'apple', followed by ~.~ to
+     apple the last change.
+      #+CAPTION: ~.~ (repeat command) in action
+      [[file:../../assets/vim/dot.gif]]
 
 * Summary
-  | Command       | Comment                                       |
-  |---------------+-----------------------------------------------|
-  | ~q<register>~ | start recording macro in register specified   |
-  | ~q~           | stop recording macro                          |
-  | ~@<register>~ | play macro store in specified register        |
-  | ~@@~          | play last played macro                        |
-  |---------------+-----------------------------------------------|
-  | =~=           | toggle the case of the character below cursor |
-  |---------------+-----------------------------------------------|
+  | Command             | Comment                                                             |
+  |---------------------+---------------------------------------------------------------------|
+  | ~c<motion command>~ | /change/ (~d~ + ~i~): deletes given range and puts into insert mode |
+  |---------------------+---------------------------------------------------------------------|
+  | ~q<register>~       | start recording macro in register specified                         |
+  | ~q~                 | stop recording macro                                                |
+  | ~@<register>~       | play macro store in specified register                              |
+  | ~@@~                | play last played macro                                              |
+  |---------------------+---------------------------------------------------------------------|
+  | ~.~                 | Repeat last change                                                  |
+  |---------------------+---------------------------------------------------------------------|
+  | =~=                 | toggle the case of the character below cursor                       |
+  |---------------------+---------------------------------------------------------------------|
 
 [[./10.org][Click here for part 10]]

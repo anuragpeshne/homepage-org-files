@@ -28,6 +28,7 @@ This is part 5 of a series of tutorial to Vim. You can read [[./4.org][Part 4 he
     as we enter keywords, highlighting all the matched words, etcetera.
   - Press ~n~ to jump to next matched item.
     - ~N~ to go to previous matched item (adding shift reverses the action)
+  - Or press ~<shift>-/~ (~?~) to search backwards.
 
 ** Regex
    No search system is worth its salt if doesn't support regex. Vim considers its
@@ -52,7 +53,7 @@ This is part 5 of a series of tutorial to Vim. You can read [[./4.org][Part 4 he
         using a backslash ~\~
       - ~bit\.~ will match just 'bit.' and nothing else.
    5. ~[...]~ will match any one of the characters inside '[' and ']'
-      - ~[1, 2, 3, 4, 5, 6, 7, 8, 9, 0]~ will match any single digit
+      - ~[1234567890]~ will match any single digit
       - above rule can be shorten as ~[0-9]~ similar to ~[a-zA-Z]~ to match characters
         in range a-z.
       - append a ~+~ and you have regex rule to search for numbers greater than 9.

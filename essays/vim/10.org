@@ -1,0 +1,33 @@
+#+TITLE: Vim: Registers
+#+DATE: 2017-06-26
+#+OPTIONS: toc:nil num:nil creator:t author:t tex:t timestamp:nil
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+#+HTML_HEAD: <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+#+FILETAGS:  :vim:tutorial:registers:
+
+#+INCLUDE: "../../../assets/ga.org"
+
+This is part 10 of a series of tutorial to Vim. You can read [[./9.org][Part 9 here]].
+
+* Two Buckets
+  I bet you wanted this, what I'm going to tell you next, always. Even if you didn't
+  know it existed, you secretly desired for this.
+
+  Imagine you are editing some text, moving around some lines. You copied some text
+  into your clipboard, came to the target location and realized before you can
+  paste and empty your buffer, you want to remove some lines. And not just remove,
+  you actually want to shift them somewhere else. Now you need the clipboard space
+  for moving but it is already filled with previous text.
+
+  Consider another scenario, you have two distinct lines which you want to paste
+  at different location based on the surrounding lines, that is, sometimes you
+  want to paste line 1 and sometimes line 2.
+
+  Consider, yet another scenario, you copied some lines and you realized, you want
+  to access the text which was there in clipboard before you yanked. Wouldn't it be
+  nice if there were 2 clipboards, 2 buckets, where in you could place two things
+  at once.
+
+* Even better: Stack
+  Vim gives you even better facility: it gives you clipboard as a stack. It remembers
+  last 10 items you yanked or deleted.

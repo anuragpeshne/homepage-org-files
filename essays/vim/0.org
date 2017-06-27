@@ -45,4 +45,5 @@
       - ~:!~
       - =~=: capitalize
       - ~c~: change
+      - ~<c-p>~: in built auto complete
   13. Vim Diff

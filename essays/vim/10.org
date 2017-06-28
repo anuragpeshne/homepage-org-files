@@ -10,8 +10,8 @@
 This is part 10 of a series of tutorial to Vim. You can read [[./9.org][Part 9 here]].
 
 * Two Buckets
-  I bet you wanted this, what I'm going to tell you next, always. Even if you didn't
-  know it existed, you secretly desired for this.
+  I bet you always wanted this. Even if you didn't know it existed, you secretly
+  desired something like this.
 
   Imagine you are editing some text, moving around some lines. You copied some text
   into your clipboard, came to the target location and realized before you can
@@ -23,11 +23,34 @@ This is part 10 of a series of tutorial to Vim. You can read [[./9.org][Part 9 h
   at different location based on the surrounding lines, that is, sometimes you
   want to paste line 1 and sometimes line 2.
 
-  Consider, yet another scenario, you copied some lines and you realized, you want
+  Consider yet another scenario, you copied some lines and you realized, you want
   to access the text which was there in clipboard before you yanked. Wouldn't it be
   nice if there were 2 clipboards, 2 buckets, where in you could place two things
   at once.
 
 * Even better: Stack
-  Vim gives you even better facility: it gives you clipboard as a stack. It remembers
-  last 10 items you yanked or deleted.
+  Vim gives you even better facility: it gives you clipboard as a stack, along with
+  several other general and special purpose buckets. It remembers last 10 items
+  you yanked or deleted. These buckets are called as registers[fn:1]. There are
+  several categories of them, here we'll see some of them.
+** Lesson 11
+   #+BEGIN_VERSE
+   Vim has multiple /registers/ which are used for yanking/deleting/putting stuff into and from.
+   #+END_VERSE
+
+** Default Register
+   Whenever you yank or delete characters you need to specify a register which you
+   want to put into; similarly while pasting (or putting), you need to specify which
+   register to get characters from. Registers are specified by prefixing ~"~. And
+   the way you specify a register to yank/delete/put from is by prefixing register
+   before the command. Thus, to yank into register ~"a~, you say ~"ay<motion command>~.
+
+   But, if you didn't specify any register, like we did till now, Vim will use default
+   , unamed, register ~"~ for it. Therefore, when you pressed ~dd~ to delete current
+   line, what Vim saw was ~""dd~. (Here, the first ~"~ is to specify register, as
+   needed by any other register; the second ~"~ is the actual register.)
+
+** The Stack
+
+
+[fn:1] ~:help registers~ to read official documentation

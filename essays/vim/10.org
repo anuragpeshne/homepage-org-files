@@ -28,29 +28,53 @@ This is part 10 of a series of tutorial to Vim. You can read [[./9.org][Part 9 h
   nice if there were 2 clipboards, 2 buckets, where in you could place two things
   at once.
 
-* Even better: Stack
-  Vim gives you even better facility: it gives you clipboard as a stack, along with
-  several other general and special purpose buckets. It remembers last 10 items
-  you yanked or deleted. These buckets are called as registers[fn:1]. There are
-  several categories of them, here we'll see some of them.
+** Even better: Stack
+   Vim gives you even better facility: it gives you clipboard as a stack, along with
+   several other general and special purpose buckets. It remembers last 10 items
+   you yanked or deleted. These buckets are called as registers[fn:1]. There are
+   several categories of them, here we'll see some of them.
 ** Lesson 11
    #+BEGIN_VERSE
    Vim has multiple /registers/ which are used for yanking/deleting/putting stuff into and from.
    #+END_VERSE
 
+* Registers
+  Whenever you yank or delete characters you need to specify a register which you
+  want to put into; similarly while pasting (or putting), you need to specify which
+  register to get characters from. Registers are specified by prefixing ~"~. And
+  the way you specify a register to yank/delete/put from is by prefixing register
+  before the command. Thus, to yank into register ~"a~, you say ~"ay<motion command>~.
+
+** Name registers ~"a~ to ~"z~
+   These are general purpose registers which you can use to store text[fn:2]. When
+   you use ~d~, ~x~, ~c~ along with register name, the content of the register is
+   overwritten[fn:3]. Storing text in named register is a good idea when you have
+   same text to be paste multiple times along with some editing.
+
+** The Stack: registers ~"0~ to ~"9~
+   But, if you didn't specify any register, like we did till now, Vim will use stack
+   , formed by registers ~"0~ to ~"9~. There is a slight difference in stack for
+   delete and change commands and yank command:
+   - Stack for yank command starts with register ~"0~: If you do not specify a register
+     ~"0~ will be used for storing content yanked. Previous content of ~"0~ will shift
+     to ~"1~, ~"1~ to ~"2~ and so on, forming a stack.
+   - Stacks for delete and change command starts with register ~"1~. The stack grows
+     ~"1~ to ~"9~.
+   - It is worth noting that although the stack starts with different register for
+     yank and delete commands, but they share the same stack. So content of delete
+     command will be shifted by a yank command. But last content of yank command
+     *will not* be shifted by a delete command.
+     - This can be helpful when you want to paste the last yanked text and not the
+       text deleted or changed, which may have been done to delete rather than move.
+
+   If by reading this, you found it complicated, I suggest to see for yourself.
+   Yank and delete some text and observe the state of the stack (and all the registers
+   used) by executing ~:registers~ or ~:reg~ for short.
+
 ** Default Register
-   Whenever you yank or delete characters you need to specify a register which you
-   want to put into; similarly while pasting (or putting), you need to specify which
-   register to get characters from. Registers are specified by prefixing ~"~. And
-   the way you specify a register to yank/delete/put from is by prefixing register
-   before the command. Thus, to yank into register ~"a~, you say ~"ay<motion command>~.
-
-   But, if you didn't specify any register, like we did till now, Vim will use default
-   , unamed, register ~"~ for it. Therefore, when you pressed ~dd~ to delete current
-   line, what Vim saw was ~""dd~. (Here, the first ~"~ is to specify register, as
-   needed by any other register; the second ~"~ is the actual register.)
-
-** The Stack
+   Unamed register ~"~ acts like a pointer to recently used register.
 
 
 [fn:1] ~:help registers~ to read official documentation
+[fn:2] Macros are sequence of keys, which can be stored and manipulated as text
+[fn:3] You can use upper case characters to append to the registers.

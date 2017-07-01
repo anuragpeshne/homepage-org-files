@@ -31,7 +31,7 @@ This is part 10 of a series of tutorial to Vim. You can read [[./9.org][Part 9 h
 ** Even better: Stack
    Vim gives you even better facility: it gives you clipboard as a stack, along with
    several other general and special purpose buckets. It remembers last 10 items
-   you yanked or deleted. These buckets are called as registers[fn:1]. There are
+   you yanked or deleted. These buckets are called as /registers/[fn:1]. There are
    several categories of them, here we'll see some of them.
 ** Lesson 11
    #+BEGIN_VERSE
@@ -73,7 +73,7 @@ This is part 10 of a series of tutorial to Vim. You can read [[./9.org][Part 9 h
    or ~:reg~ for short.
 
 ** Default Register
-   Unamed register ~""~[fn:4] acts like a pointer to recently used register. Thus if you
+   Unnamed register ~""~[fn:4] acts like a pointer to recently used register. Thus if you
    didn't specify a register while yanking, ~""~ will point to ~"0~ and ~"1~ in
    case of delete command.
 
@@ -91,20 +91,44 @@ This is part 10 of a series of tutorial to Vim. You can read [[./9.org][Part 9 h
    2. ~"%~: contains name of current file
    3. ~":~: contains recently executed command-line.
 
-* TODO Marks
+* Editing Macro
+  If you remember, in the [[./9.org][previous part]], we discussed how we can store sequences of
+  keys in a register as a keyboard macro. If you lookup registers used (by executing
+  ~:reg~), you'll see all the macros recorded as text. Not only you can view them
+  as text, you can edit them too. You can put them (~p~), edit the sequence of keys
+  and yank the macro back into the same or different register.
 
-* TODO One More Thing: Editing Macro
-  If you remember, in the [[./9.org][previous part]], we discussed how we can store
-  sequences of keys in a register.
+  Let's look at a macro edit in action. Suppose you recorded a macro to append 'w'
+  end of line:
+  1. ~qw~: start recording macro in register ~w~
+  2. ~A~: append to end of line (goto end of line and switch to insert mode)
+  3. ~w~: insert 'w' into buffer
+  4. ~<esc>~: go back to normal mode
+  5. ~j~: go down one line
+  6. ~q~: stop recording
 
-* TODO Summary
+  You can see how it works by playing it couple of times using ~@w~. Now, say instead
+  of appending 'w' you want to append 'd' or even 'Donald Duck'. To do that we can
+  edit existing macro rather than recording a new one:
+  1. Paste the macro using ~"wp~ (paste the content of register ~"w~)
+  2. Edit the key sequences: replace 'w' with 'Donald Duck'
+  3. Yank it back to register ~"w~: ~"wyy~ assuming the content was in its own line.
+     - We could have yanked it into another register and then use either of macros
+       to append 'w' or 'Donald Duck'.
+
+* Summary
   | Command                | Comment                                                                                                  |
   |------------------------+----------------------------------------------------------------------------------------------------------|
   | ~"reg[ydxc]~           | You can specify a register by prefixing ~"~ and specify register before a yank, delete or change command |
   | Registers ~"a~ to ~"z~ | Named registers                                                                                          |
   | Registers ~"0~ to ~"9~ | Stack: yank starts with ~"0~ and delete with ~"1~                                                        |
   | Register ~"_~          | Black hole register                                                                                      |
+  | ~:reg~ or ~:registers~ | Lists all the registers in use                                                                           |
   |------------------------+----------------------------------------------------------------------------------------------------------|
+  | ~A~                    | Goto end of line and switches to /insert mode/. Similar to ~a~. Both usually used to /append/ text.      |
+  |------------------------+----------------------------------------------------------------------------------------------------------|
+
+[[./11.org][Click here for part 11]]
 
 [fn:1] ~:help registers~ to read official documentation
 [fn:2] Macros are sequence of keys, which can be stored and manipulated as text

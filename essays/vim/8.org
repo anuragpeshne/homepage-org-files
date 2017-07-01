@@ -23,6 +23,8 @@ This is part 8 of a series of tutorial to Vim. You can read [[./7.org][Part 7 he
    You can also jump to specific buffer using its ID[fn:1], ID is listed in output of ~:ls~,
    using ~:b~ followed by ID.
 
+   When you are done with a buffer, you can delete it by ~:bdelete~ or ~:bd~.
+
 *** Buffer Philosophy
     Vim uses buffers the way we are used to have multiple things open in Tabs, like
     in Internet Browsers. Newer text editors and IDEs have taken this approach,
@@ -105,6 +107,7 @@ This is part 8 of a series of tutorial to Vim. You can read [[./7.org][Part 7 he
   | ~:bn~ or ~:bnext~      | switch to /next/ buffer                              |
   | ~:bp~ or ~:bprevious~  | switch to /previous/ buffer                          |
   | ~:b<id>~               | switch to ~id~ buffer                                |
+  | ~:bd~ or ~:bdelete~    | delete a buffer                                      |
   |------------------------+------------------------------------------------------|
   | ~<c-w> s~              | horizontal /split/                                   |
   | ~<c-w> v~              | /vertical/ split                                     |

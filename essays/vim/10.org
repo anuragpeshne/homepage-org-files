@@ -43,38 +43,70 @@ This is part 10 of a series of tutorial to Vim. You can read [[./9.org][Part 9 h
   want to put into; similarly while pasting (or putting), you need to specify which
   register to get characters from. Registers are specified by prefixing ~"~. And
   the way you specify a register to yank/delete/put from is by prefixing register
-  before the command. Thus, to yank into register ~"a~, you say ~"ay<motion command>~.
+  before the command. Thus, to yank into register ~"a~, you'd say ~"ay<motion command>~.
 
-** Name registers ~"a~ to ~"z~
+** Named registers ~"a~ to ~"z~
    These are general purpose registers which you can use to store text[fn:2]. When
-   you use ~d~, ~x~, ~c~ along with register name, the content of the register is
+   you use ~d~, ~x~, ~c~ or ~y~ along with register name, the content of the register is
    overwritten[fn:3]. Storing text in named register is a good idea when you have
    same text to be paste multiple times along with some editing.
 
 ** The Stack: registers ~"0~ to ~"9~
-   But, if you didn't specify any register, like we did till now, Vim will use stack
-   , formed by registers ~"0~ to ~"9~. There is a slight difference in stack for
+   But, if you didn't specify any register, like we did till now, Vim will use the
+   stack formed by registers ~"0~ to ~"9~. There is a slight difference in stack for
    delete and change commands and yank command:
-   - Stack for yank command starts with register ~"0~: If you do not specify a register
-     ~"0~ will be used for storing content yanked. Previous content of ~"0~ will shift
+   - Stack for yank command starts with register ~"0~: If you do not specify a register,
+     ~"0~ will be used for storing yanked content. Previous content of ~"0~ will shift
      to ~"1~, ~"1~ to ~"2~ and so on, forming a stack.
    - Stacks for delete and change command starts with register ~"1~. The stack grows
      ~"1~ to ~"9~.
    - It is worth noting that although the stack starts with different register for
-     yank and delete commands, but they share the same stack. So content of delete
+     yank and delete commands, they share the same stack. So content of delete
      command will be shifted by a yank command. But last content of yank command
      *will not* be shifted by a delete command.
-     - This can be helpful when you want to paste the last yanked text and not the
-       text deleted or changed, which may have been done to delete rather than move.
+     - This can be helpful when you want to paste the last yanked text since it
+       will not be disturbed by delete or change command.
 
-   If by reading this, you found it complicated, I suggest to see for yourself.
-   Yank and delete some text and observe the state of the stack (and all the registers
-   used) by executing ~:registers~ or ~:reg~ for short.
+   If by reading this, you get a feeling that it is convoluted, I suggest you to
+   see the stack in action for yourself. Yank and delete some text and observe
+   the state of the stack (and all the registers used) by executing ~:registers~
+   or ~:reg~ for short.
 
 ** Default Register
-   Unamed register ~"~ acts like a pointer to recently used register.
+   Unamed register ~""~[fn:4] acts like a pointer to recently used register. Thus if you
+   didn't specify a register while yanking, ~""~ will point to ~"0~ and ~"1~ in
+   case of delete command.
 
+** Black hole Register: ~"_~
+   This is analogous to Unix's ~/dev/null~, whatever is written to it is lost.
+   This can be helpful when you want to delete/change something without disturbing
+   the stack. For example: ~"_di{~ will delete everything inside ~{...}~ without
+   storing it in register.
+
+** Other Registers
+   There are several more registers which we haven't looked here. Some of the more
+   interesting ones which you might want to look up would be:
+   1. ~"*~, ~"+~ and ="~= which help in pasting content copied from other GUI programs
+      like web browsers and pasting in Vim using put (~p~) command.
+   2. ~"%~: contains name of current file
+   3. ~":~: contains recently executed command-line.
+
+* TODO Marks
+
+* TODO One More Thing: Editing Macro
+  If you remember, in the [[./9.org][previous part]], we discussed how we can store
+  sequences of keys in a register.
+
+* TODO Summary
+  | Command                | Comment                                                                                                  |
+  |------------------------+----------------------------------------------------------------------------------------------------------|
+  | ~"reg[ydxc]~           | You can specify a register by prefixing ~"~ and specify register before a yank, delete or change command |
+  | Registers ~"a~ to ~"z~ | Named registers                                                                                          |
+  | Registers ~"0~ to ~"9~ | Stack: yank starts with ~"0~ and delete with ~"1~                                                        |
+  | Register ~"_~          | Black hole register                                                                                      |
+  |------------------------+----------------------------------------------------------------------------------------------------------|
 
 [fn:1] ~:help registers~ to read official documentation
 [fn:2] Macros are sequence of keys, which can be stored and manipulated as text
 [fn:3] You can use upper case characters to append to the registers.
+[fn:4] Here the register is ~"~ and the way to access register is by prefixing a ~"~, hence we access the default register by ~""~

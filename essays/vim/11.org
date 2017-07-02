@@ -1,0 +1,83 @@
+#+TITLE: Vim: File Navigation
+#+DATE: 2017-07-02
+#+OPTIONS: toc:nil num:nil creator:t author:t tex:t timestamp:nil
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+#+HTML_HEAD: <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+#+FILETAGS:  :vim:tutorial:registers:
+
+#+INCLUDE: "../../../assets/ga.org"
+
+This is part 11 of a series of tutorial to Vim. You can read [[./10.org][Part 10 here]].
+
+Till now we have seen several ways to navigate within a buffer in Vim. In this part
+we'll see how we can move across files, how to jump directly to function or variable
+definitions and jumping right in middle of a file at a predefined place.
+
+* ~:e~ on steroids
+  You want to open a file, your file is deep down in the folder hierarchy, you don't
+  want to type in full path and of course, you want to open it fast. Vim can help
+  you with that too.
+
+  Press ~:e **/<file name initials>~ and press ~<TAB>~ to let Vim search for all
+  files starting with given initials and prepare a list of choices for you. You
+  can cycle through the list using ~<TAB>~ and ~<enter>~ to select a file to edit.
+  #+CAPTION: Using ~**/10~ to open ~org-files/essays/vim/10.org~
+  [[file:../../assets/vim/star-e.gif]]
+
+* ~TAGS~
+** [[https://en.wikipedia.org/wiki/Unix_philosophy][Unix Philosophy]]
+   #+BEGIN_QUOTE
+   - Write programs that do one thing and do it well.
+   - Write programs to work together.
+   - Write programs to handle text streams, because that is a universal interface.
+   #+END_QUOTE
+   Installation size of Vim is less than size of an average quality 3 minute MP3.
+   Instead of having every feature, it relies on help from external programs. There
+   are several language specific plugins which give Vim /IDE like/ features such
+   as jumping to function definition, REPL etc. We won't discuss these here but
+   one program here which works for all languages: ~ctags~[fn:1].
+
+   ~ctags~ generate a ~tags~ file which has index of names found in source files[fn:4].
+   This index is used to jump to function, identifier definition. You can create
+   a ~tags~ file by executing ~ctags -R .~[fn:2] from root directory. This will create
+   the ~tags~ file in root of the project. You can start Vim without any arguments
+   from the root and use ~:e **/file-name~ to open files so that ~tags~ file is
+   loaded by Vim[fn:3].
+
+   Once ~tags~ is loaded, jumping around is simple:
+   - you can jump to definition of the function name or identifier under cursor
+     by pressing ~<ctrl>+]~.
+   - or explicitly search for a name by ~:tag <name>~.
+   - After jumping to definition, if you search for another name you will build
+     a deeper /tag stack/. Vim remembers your history of tag jumps using such tag
+     stack.
+   - To go back to previous position from where you searched (that is up the tag stack)
+     press ~<ctrl>+t~.
+   - You can see the stack by executing ~:tags~.
+   - And, if there are multiple definition for same name (say because of function
+     overloading), Vim jumps to the first option if you press ~<ctrl>+]~, to see
+     all the options press ~g~ followed by ~<ctrl>+]~.
+
+* (Book)marks
+
+
+* Summary
+  | Command                      | Comment                                                                                   |
+  |------------------------------+-------------------------------------------------------------------------------------------|
+  | ~:e **/file-name-initials~   | searches for file name recursively from current directory                                 |
+  |------------------------------+-------------------------------------------------------------------------------------------|
+  | ~ctags -R .~ (shell command) | generates index file (tags)                                                               |
+  | ~<ctrl>+]~                   | jump to definition for name under cursor                                                  |
+  | ~:tag <name>~                | search definition for name                                                                |
+  | ~<ctrl>+t~                   | go up the tag stack (go back to previous position from where jump to definition was made) |
+  | ~:tags~                      | see the tag stack                                                                         |
+  | ~g~ ~<ctrl>+t~               | go to definition (helpful when there are multiple definitions for same name               |
+  |------------------------------+-------------------------------------------------------------------------------------------|
+
+[[./12.org][Click here for part 12]]
+
+
+[fn:1] Similarly ~ctags~ works with other editors too.
+[fn:2] ~-R~ to generate recursively for files, you may also want to add options like ~--exclude~.
+[fn:3] This step is necessary to make sure Vim loads the ~tags~ file. But this is not the only way.
+[fn:4] ~tags~ is a text file which you easily open and play around with. It contains regex rules which helps in jumping.

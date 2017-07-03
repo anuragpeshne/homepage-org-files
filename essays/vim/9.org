@@ -169,7 +169,7 @@ This is part 9 of a series of tutorial to Vim. You can read [[./8.org][Part 8 he
 
    To demonstrate this, let's do slightly changed version of /title-lize/ example,
    this time we want to change 'apple' to 'orange'. While this can be easily done
-   using substitute command, using ~.~ and ~n~ can make it more iterative and require
+   using substitute command, using ~.~ and ~n~ can make it more interactive and require
    less typing. But before we get to actual example, let me introduce to one more
    way of switching to /insert/ mode.
 

@@ -34,8 +34,8 @@ definitions and jumping right in middle of a file at a predefined place.
    Installation size of Vim is less than size of an average quality 3 minute MP3.
    Instead of having every feature, it relies on help from external programs. There
    are several language specific plugins which give Vim /IDE like/ features such
-   as jumping to function definition, REPL etc. We won't discuss these here but
-   one program here which works for all languages: ~ctags~[fn:1].
+   as jumping to function definition, REPL etc. We won't discuss all of these but
+   one program here which works for (almost) all languages: ~ctags~[fn:1].
 
    ~ctags~ generate a ~tags~ file which has index of names found in source files[fn:4].
    This index is used to jump to function, identifier definition. You can create
@@ -58,7 +58,17 @@ definitions and jumping right in middle of a file at a predefined place.
      overloading), Vim jumps to the first option if you press ~<ctrl>+]~, to see
      all the options press ~g~ followed by ~<ctrl>+]~.
 
-* (Book)marks
+* (Book)Marks
+  Marks does exactly what you might expect, it references specific location in file
+  so that you can jump directly to that position. You can set marks using ~m[a-zA-Z]~
+  You can use ~a-zA-Z~ for marking which are *totally unrelated to the registers*
+  which we saw in [[./10.org][last part]]. A few more commands related to marking:
+  - Setting a new mark: ~m[a-zA-Z]~
+  - Jumping to a specific mark: ~'<mark>~
+  - List all the marks: ~:marks~
+  - ~:delmarks <marks>~ will delete marks
+
+  Upper case and lower case marks behave slightly differently.
 
 
 * Summary
@@ -72,6 +82,11 @@ definitions and jumping right in middle of a file at a predefined place.
   | ~<ctrl>+t~                   | go up the tag stack (go back to previous position from where jump to definition was made) |
   | ~:tags~                      | see the tag stack                                                                         |
   | ~g~ ~<ctrl>+t~               | go to definition (helpful when there are multiple definitions for same name               |
+  |------------------------------+-------------------------------------------------------------------------------------------|
+  | ~m[a-zA-Z]~                  | set a new mark                                                                            |
+  | ~'<mark>~                    | jump to specific mark                                                                     |
+  | ~:marks~                     | list all marks                                                                            |
+  | ~:delmarks <marks>~          | delete specified marks                                                                    |
   |------------------------------+-------------------------------------------------------------------------------------------|
 
 [[./12.org][Click here for part 12]]

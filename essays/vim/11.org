@@ -21,6 +21,12 @@ definitions and jumping right in middle of a file at a predefined place.
   Press ~:e **/<file name initials>~ and press ~<TAB>~ to let Vim search for all
   files starting with given initials and prepare a list of choices for you. You
   can cycle through the list using ~<TAB>~ and ~<enter>~ to select a file to edit.
+
+  ~**~ can also be used to search and open file at arbitrary location and not just
+  ~pwd~ (present working directory). Suppose your ~pwd~ is =~= and you want to open
+  a file somewhere deep inside ~/etc/lampp/config/...~, you can search in Vim by
+  typing ~:e /etc/lampp/config/**/file-name~, followed by ~<tab>~.
+
   #+CAPTION: Using ~**/10~ to open ~org-files/essays/vim/10.org~
   [[file:../../assets/vim/star-e.gif]]
 
@@ -65,29 +71,48 @@ definitions and jumping right in middle of a file at a predefined place.
   which we saw in [[./10.org][last part]]. A few more commands related to marking:
   - Setting a new mark: ~m[a-zA-Z]~
   - Jumping to a specific mark: ~'<mark>~
+    - ~'~ will take you to beginning of line
+    - ~`~ will take you to the exact line and column
   - List all the marks: ~:marks~
   - ~:delmarks <marks>~ will delete marks
 
-  Upper case and lower case marks behave slightly differently.
+  Upper case and lower case marks behave slightly differently. Lowercase marks are
+  local to each file, while upper case marks are global. That means if you assign
+  a uppercase mark to a position in file, say ~S~ in ~.bashrc~, then whenever you
+  want to edit your ~.bashrc~ you can hit ~'S~ to open and jump to saved position.
+  This can be very helpful if you have a file which needs to be edited often.
+
+  We'll conclude discussing marks with couple of special marks:
+  1. ~`.~: jump to position where last change occured
+  2. ~``~: jump to last exited buffer
+  3. ~''~ and ~``~: jump back (to position where jumped from (using marks))
+     - note this is different from ~<ctrl> o~:
+       - ~``~ jumps back to position where used marks to jump
+       - ~<ctrl> o~ jumps back according to jump list (~:help jump-motions~).
 
 
 * Summary
-  | Command                      | Comment                                                                                   |
-  |------------------------------+-------------------------------------------------------------------------------------------|
-  | ~:e **/file-name-initials~   | searches for file name recursively from current directory                                 |
-  |------------------------------+-------------------------------------------------------------------------------------------|
-  | ~ctags -R .~ (shell command) | generates index file (tags)                                                               |
-  | ~<ctrl>+]~                   | jump to definition for name under cursor                                                  |
-  | ~:tag <name>~                | search definition for name                                                                |
-  | ~<ctrl>+t~                   | go up the tag stack (go back to previous position from where jump to definition was made) |
-  | ~:tags~                      | see the tag stack                                                                         |
-  | ~g~ ~<ctrl>+t~               | go to definition (helpful when there are multiple definitions for same name               |
-  |------------------------------+-------------------------------------------------------------------------------------------|
-  | ~m[a-zA-Z]~                  | set a new mark                                                                            |
-  | ~'<mark>~                    | jump to specific mark                                                                     |
-  | ~:marks~                     | list all marks                                                                            |
-  | ~:delmarks <marks>~          | delete specified marks                                                                    |
-  |------------------------------+-------------------------------------------------------------------------------------------|
+  | Command                               | Comment                                                                                   |
+  |---------------------------------------+-------------------------------------------------------------------------------------------|
+  | ~:e **/file-name-initials~            | searches for file name recursively from current directory                                 |
+  | ~:e /dir1/dir2/**/file-name-initials~ | same as above, but searches inside ~/dir1/dir2/~                                          |
+  |---------------------------------------+-------------------------------------------------------------------------------------------|
+  | ~ctags -R .~ (shell command)          | generates index file (tags)                                                               |
+  | ~<ctrl>+]~                            | jump to definition for name under cursor                                                  |
+  | ~:tag <name>~                         | search definition for name                                                                |
+  | ~<ctrl>+t~                            | go up the tag stack (go back to previous position from where jump to definition was made) |
+  | ~:tags~                               | see the tag stack                                                                         |
+  | ~g~ ~<ctrl>+t~                        | go to definition (helpful when there are multiple definitions for same name               |
+  |---------------------------------------+-------------------------------------------------------------------------------------------|
+  | ~m[a-zA-Z]~                           | set a new mark                                                                            |
+  | ~'<mark>~                             | jump to start of line of specified mark                                                   |
+  | ~`<mark>~                             | jump to column and line of specified mark                                                 |
+  | ~:marks~                              | list all marks                                                                            |
+  | ~:delmarks <marks>~                   | delete specified marks                                                                    |
+  | ~`.~                                  | jump to position where last change occured                                                |
+  | ~``~                                  | jump to last exited buffer                                                                |
+  | ~''~ and ~``~                         | jump back (jump taken using marks)                                                        |
+  |---------------------------------------+-------------------------------------------------------------------------------------------|
 
 [[./12.org][Click here for part 12]]
 
@@ -96,3 +121,5 @@ definitions and jumping right in middle of a file at a predefined place.
 [fn:2] ~-R~ to generate recursively for files, you may also want to add options like ~--exclude~.
 [fn:3] This step is necessary to make sure Vim loads the ~tags~ file. But this is not the only way.
 [fn:4] ~tags~ is a text file which you easily open and play around with. It contains regex rules which helps in jumping.
+
+#  LocalWords:  begininning

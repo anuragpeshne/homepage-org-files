@@ -1,0 +1,25 @@
+#+TITLE: Piece By Piece Introduction to Vim
+#+OPTIONS: toc:nil num:nil creator:t author:t tex:t timestamp:nil
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+#+HTML_HEAD: <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+#+FILETAGS:  :vim:tutorial:
+
+#+INCLUDE: "../../../assets/ga.org"
+
+* Index
+  |------+----------------------------|
+  | Part | Title                      |
+  |------+----------------------------|
+  |    1 | [[./1.org][Introduction]]               |
+  |    2 | [[./2.org][Modes]]                      |
+  |    3 | [[./3.org][Moving Around]]              |
+  |    4 | [[./4.org][Text Manipulation]]          |
+  |    5 | [[./5.org][Searching]]                  |
+  |    6 | [[./6.org][.vimrc]]                     |
+  |    7 | [[./7.org][Customization-Mapping Keys]] |
+  |    8 | [[./8.org][Buffers, Windows and Tabs]]  |
+  |    9 | [[./9.org][Macro]]                      |
+  |   10 | [[./10.org][Registers]]                  |
+  |   11 | [[./11.org][File Navigation]]            |
+  |   12 | [[./12.org][Visual Mode]]                |
+  |------+----------------------------|

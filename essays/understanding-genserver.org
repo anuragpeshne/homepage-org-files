@@ -1,0 +1,409 @@
+#+TITLE: Understanding GenServer
+#+DATE: 2018-01-07
+#+OPTIONS: toc:t num:t creator:t author:t tex:t date:t timestamp:nil
+#+INCLUDE: "../../assets/commonHead.org"
+#+FILETAGS:  :elixir:genserver:
+
+#+INCLUDE: "../../assets/ga.org"
+
+This article is about how Elixir ~GenServer~ /work/ rather than how /to use/ it.
+If you are interested in knowing how to use ~GenServer~, I would highly
+recommend the [[https://elixir-lang.org/getting-started/mix-otp/genserver.html][getting started guide]] and [[https://www.goodreads.com/book/show/17971957-programming-elixir][Programming Elixir]] by Dave Thomas.
+
+Recently my friend came up with a very interesting question about ~GenServer~: why the
+server functions (~handle_call~, ~handle_cast~ etc) are called as /callbacks/.
+This sounded simple at first -they are invoked when the ~GenServer~ receives a
+message- but when I tried to explain this to him, I realized there's lot more
+than meets the eye and I don't understand it all. So I decided to try to write[fn:1]
+my own version of ~GenServer~ to learn how Elixir ~GenServer~ could have been
+implemented.
+
+[fn:1] Another way is to read how exactly it is implemented [[https://github.com/elixir-lang/elixir/blob/v1.5.3/lib/elixir/lib/gen_server.ex#L1][on Github]] (which is conviniently point to by the [[https://hexdocs.pm/elixir/GenServer.html][documentation)]]
+* Basics
+  Let's start with a simple sender-receiver process setup, after all ~GenServer~
+  is just a shiny interface on top of state storing process along with some more
+  features such as tracing and ability to fit in nicely with supervision tree.
+
+  #+BEGIN_SRC elixir
+defmodule OddServer do
+
+  @doc """
+  Spawns server and initializes current number to 1.
+  """
+  @spec init() :: pid
+  def init() do
+    spawn(__MODULE__, :run, [1])
+  end
+
+  @doc """
+  Provided as callback to spawn, stores state and calls itself recursively.
+  """
+  def run(current) do
+    receive do
+      {:next, pid} ->
+        send pid, current
+        run(current + 2)
+
+      {:skip} ->
+        run(current + 2)
+
+      _ ->
+        IO.puts "Non sense message received."
+        run(current)
+    end
+  end
+end
+  #+END_SRC
+
+~OddServer~ is a simple process which replies with /next/ odd integer to the ~pid~
+which is sent to it. It will also skip a odd integer if message ~{:skip}~ is received.
+Let's quickly check if it does what we hope it does:
+
+#+BEGIN_SRC elixir :exports result
+# you can save the above snippet as oddserver.ex and fire up `iex oddserver.ex`
+
+oddserver = OddServer.init()
+send oddserver, {:next, self()}
+receive do
+  n -> IO.puts "Received #{n}"
+end
+
+#+END_SRC
+
+#+RESULTS:
+: Received 1
+: :ok
+
+To check if this really works, we should get next integer as ~3~. But interacting
+with our ~OddServer~ is very cumbersome. Let's pack this interaction into our
+~OddServer~ as client API, similar to what we write for ~GenServer~. This will
+not only make using ~OddServer~ easier, it will also hide internal working of
+~OddServer~ for good, so that we can safely change how odd integers are generated
+if we want to.
+
+#+BEGIN_SRC elixir
+defmodule APIOddServer do
+  ## Client API
+  def next(oddserver) do
+    send oddserver, {:next, self()}
+    receive do
+      n -> n
+    end
+  end
+
+  def skip(oddserver) do
+    send oddserver, {:skip}
+    :ok
+  end
+
+  # rest of the functions remain same as `OddServer`
+
+  @doc """
+  Spawns server and initializes current number to 1.
+  """
+  @spec init() :: pid
+  def init() do
+    spawn(__MODULE__, :run, [1])
+  end
+
+  @doc """
+  Provided as callback to spawn, stores state and calls itself recursively.
+  """
+  def run(current) do
+    receive do
+      {:next, pid} ->
+        send pid, current
+        run(current + 2)
+
+      {:skip} ->
+        run(current + 2)
+
+      _ ->
+        IO.puts "Non sense message received."
+        run(current)
+    end
+  end
+end
+#+END_SRC
+
+Let's see if consequent integers are odd:
+#+BEGIN_SRC elixir :exports result
+oddserver = APIOddServer.init()
+
+IO.inspect APIOddServer.next(oddserver)
+IO.inspect APIOddServer.next(oddserver)
+IO.inspect APIOddServer.next(oddserver)
+
+IO.inspect APIOddServer.skip(oddserver)
+
+IO.inspect APIOddServer.next(oddserver)
+#+END_SRC
+
+#+RESULTS:
+: 1
+: 3
+: 5
+: :ok
+: 9
+
+Much better!
+
+* ~OddServer~ using ~GenServer~
+  Now that we have a simple state storing process that has a nice interface, let's
+  write similar server using ~GenServer~:
+
+#+BEGIN_SRC elixir
+defmodule OddGenServer do
+  use GenServer
+
+  ## Client API
+  def next(oddserver) do
+    GenServer.call(oddserver, :next)
+  end
+
+  def skip(oddserver) do
+    GenServer.cast(oddserver, :skip)
+  end
+
+  def start_link() do
+    GenServer.start_link(__MODULE__, 1)
+  end
+
+  ## Callbacks
+  def handle_call(:next, _from, current) do
+    {:reply, current, current + 2}
+  end
+
+  def handle_cast(:skip, current) do
+    {:noreply, current + 2}
+  end
+end
+#+END_SRC
+
+  Note that ~OddGenServer~ has same API as ~APIOddServer~; so we can use exact same
+  lines of code to test ~OddGenServer~:
+  #+BEGIN_SRC elixir :exports result
+{:ok, oddserver} = OddGenServer.start_link()
+
+IO.inspect OddGenServer.next(oddserver)
+IO.inspect OddGenServer.next(oddserver)
+IO.inspect OddGenServer.next(oddserver)
+
+IO.inspect OddGenServer.skip(oddserver)
+
+IO.inspect OddGenServer.next(oddserver)
+  #+END_SRC
+
+  #+RESULTS:
+  : 1
+  : 3
+  : 5
+  : :ok
+  : 9
+
+* ~SimServer~
+  You may have already noticed striking similarities between the basic process
+  ~APIOddServer~ and ~OddGenServer~. If we just compare what code we had to write
+  to get an interface to ~APIOddServer~, we can guess code for ~GenServer.call~
+  and ~GenServer.cast~:
+
+  #+BEGIN_SRC elixir
+def call(pid, msg) do
+  send pid, {msg, self()}
+  receive do
+    result -> result
+  end
+end
+
+def cast(pid, msg) do
+  send pid, msg
+  :ok
+end
+  #+END_SRC
+
+  And now we just have to find out how the ~receive~ loop is implemented. Let's
+  start with ~:next~: when the process receives ~:next~, it should invoke the
+  callback, send the result and continue. Where as in the case of ~:skip~, the
+  process doesn't need to send anything back. The message given by user is not
+  enough to know if the client is waiting for a reply, ~call~ and ~cast~ should
+  add more information to the message.
+
+  We can easily find out what message is sent by ~GenServer.call~ and ~GenServer.cast~,
+  by making it send message to an /echoing/ process.
+
+  #+BEGIN_SRC elixir :exports result
+defmodule Echo do
+  def run do
+    receive do
+      msg -> IO.inspect msg
+    end
+  end
+end
+
+echo_pid = spawn(Echo, :run, [])
+GenServer.cast(echo_pid, :skip)
+GenServer.call(echo_pid, :next)
+  #+END_SRC
+
+  #+RESULTS:
+  : {:"$gen_cast", :skip}
+  : {:"$gen_call", {#PID<0.130.0>, #Reference<0.1258433368.354680834.72997>}, :next}
+
+  And that's it! we have enough ingredients to bake our own ~GenServer~, let's call
+  it ~SimServer~ -if ~GenServer~ is general, ~SimServer~ is simple!
+
+  #+BEGIN_SRC elixir
+defmodule SimServer do
+
+  def call(pid, msg) do
+    send pid, {:"$gen_call", self(), msg}
+    receive do
+      reply -> reply
+    end
+  end
+
+  def cast(pid, msg) do
+    send pid, {:"$gen_cast", msg}
+    :ok
+  end
+
+  def start(start_state) do
+    spawn(__MODULE__, :run, [start_state])
+  end
+
+  def run(state) do
+    receive do
+      {:"$gen_call", from, msg} ->
+        {reply, new_state} = handle_call(msg, from, state)
+        send from, reply
+        run(new_state)
+
+      {:"$gen_cast", msg} ->
+        {new_state} = handle_cast(msg, state)
+        run(new_state)
+
+      # everything else handled as `handle_info`
+      msg ->
+        {new_state} = handle_info(msg, state)
+        run(new_state)
+    end
+  end
+end
+  #+END_SRC
+
+  It might look that we are done with the implementation, but there is still one
+  last thing left: providing default implementation for ~handle_call~, ~handle_cast~
+  and ~handle_info~. At this point I did some cheating and looked into [[https://github.com/elixir-lang/elixir/blob/v1.5.3/lib/elixir/lib/gen_server.ex#L564][source code]]
+  of ~GenServer~ to see how default implementations are provided. That is done is
+  ~using~ hook and ~quote~ which helps in treating code as data. Since this looks
+  a bit our of scope of what we set out to do, I'm going to skip that.
+
+  Along with the ~__using__~ hook which is invoked when ~use~ is called, I saw
+  ~@callback~ directive, which is used to define [[https://hexdocs.pm/elixir/behaviours.html][behaviours]]. According to the documentation:
+#+BEGIN_VERSE
+Behaviours in Elixir (and Erlang) are a way to separate and abstract the generic part of a component (which becomes the behaviour module) from the specific part (which becomes the callback module).
+
+A behaviour module defines a set of functions and macros (referred to as callbacks) that callback modules implementing that behaviour must export...
+#+END_VERSE
+
+  So, this explains our original question: why the functions ~handle_call~, ~handle_cast~
+  are called as /callbacks/ -because they have to be implemented in the callback 
+  modules. This has nothing to do with function being passed!
+
+  Anyhow, we should complete the task we started and complete our toy ~GenServer~.
+  #+BEGIN_SRC elixir
+defmodule SimServer do
+
+  @callback handle_call(any, pid, any) :: {atom, any}
+  @callback handle_cast(any, any) :: {any}
+  @callback handle_info(any, any) :: {any}
+
+  def call(pid, msg) do
+    send pid, {:"$gen_call", self(), msg}
+    receive do
+      reply -> reply
+    end
+  end
+
+  def cast(pid, msg) do
+    send pid, {:"$gen_cast", msg}
+    :ok
+  end
+
+  def start(module, start_state) do
+    spawn(__MODULE__, :run, [module, start_state])
+  end
+
+  def run(module, state) do
+    receive do
+      {:"$gen_call", from, msg} ->
+        {reply, new_state} = module.handle_call(msg, from, state)
+        send from, reply
+        run(module, new_state)
+
+      {:"$gen_cast", msg} ->
+        {new_state} = module.handle_cast(msg, state)
+        run(module, new_state)
+
+      # everything else handled as `handle_info`
+      msg ->
+        {new_state} = module.handle_info(msg, state)
+        run(module, new_state)
+    end
+  end
+end
+  #+END_SRC
+
+  Now let's implement a ~OddServer~ using ~SimServer~:
+  #+BEGIN_SRC elixir
+  defmodule OddSimServer do
+    @behaviour SimServer
+
+    ## Client API
+    def next(oddserver) do
+      SimServer.call(oddserver, :next)
+    end
+
+    def skip(oddserver) do
+      SimServer.cast(oddserver, :skip)
+    end
+
+    def start() do
+      SimServer.start(__MODULE__, 1)
+    end
+
+    ## callbacks
+    def handle_call(:next, _from, current) do
+      {current, current + 2}
+    end
+
+    def handle_cast(:skip, current) do
+      {current + 2}
+    end
+
+    def handle_info(_msg, state) do
+      IO.puts "Non sense message received"
+      {state}
+    end
+  end
+  #+END_SRC
+
+  And finally let test our implementation using the same lines of code:
+#+BEGIN_SRC elixir :exports result
+oddserver = OddSimServer.start()
+
+IO.inspect OddSimServer.next(oddserver)
+IO.inspect OddSimServer.next(oddserver)
+IO.inspect OddSimServer.next(oddserver)
+
+IO.inspect OddSimServer.skip(oddserver)
+
+IO.inspect OddSimServer.next(oddserver)
+#+END_SRC
+
+#+RESULTS:
+: 1
+: 3
+: 5
+: :ok
+: 9

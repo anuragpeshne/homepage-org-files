@@ -1,7 +1,6 @@
 #+TITLE: Quotes
 #+OPTIONS: toc:t num:nil creator:nil author:nil timestamp:nil postamble:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../css/style.css" />
-#+HTML_HEAD: <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 #+HTML_HEAD: <style> .verse{ padding: 50px 0 250px 0; } </style>
 
 *** The Most Important Thing.

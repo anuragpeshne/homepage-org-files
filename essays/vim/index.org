@@ -1,7 +1,6 @@
 #+TITLE: Piece By Piece Introduction to Vim
 #+OPTIONS: toc:nil num:nil creator:t author:t tex:t timestamp:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../../css/style.css" />
-#+HTML_HEAD: <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 #+FILETAGS:  :vim:tutorial:
 
 #+INCLUDE: "../../../assets/ga.org"

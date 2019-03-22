@@ -1,8 +1,9 @@
 #+TITLE: Reduction Direction for Hackers
 #+DATE: 2016-01-12
-#+OPTIONS: toc:nil num:nil creator:t author:t tex:t
+#+OPTIONS: toc:nil num:nil creator:t author:t tex:t timestamp:nil
 #+INCLUDE: "../../assets/commonHead.org"
 #+FILETAGS:  :reduction:np:np-complete:np-hard:
+#+AUTHOR: Anurag Peshne
 
 #+INCLUDE: "../../assets/ga.org"
 

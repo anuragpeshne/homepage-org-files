@@ -3,6 +3,7 @@
 #+OPTIONS: toc:nil num:nil creator:t author:t tex:t timestamp:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../../css/style.css" />
 #+FILETAGS:  :vim:tutorial:registers:
+#+AUTHOR: Anurag Peshne
 
 #+INCLUDE: "../../../assets/ga.org"
 

@@ -5,6 +5,7 @@
 #+HTML_HEAD: <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 #+HTML_HEAD: <script src="/js/keywords/drawGraph.js"></script>
 #+FILETAGS:  :keywords:programming-languages:
+#+AUTHOR: Anurag Peshne
 
 #+INCLUDE: "../../assets/ga.org"
 #+HTML: <div id="draftTag">DRAFT</div>

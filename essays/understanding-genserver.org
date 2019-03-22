@@ -3,6 +3,7 @@
 #+OPTIONS: toc:t num:t creator:t author:t tex:t date:t timestamp:nil
 #+INCLUDE: "../../assets/commonHead.org"
 #+FILETAGS:  :elixir:genserver:
+#+AUTHOR: Anurag Peshne
 
 #+INCLUDE: "../../assets/ga.org"
 
@@ -307,7 +308,7 @@ A behaviour module defines a set of functions and macros (referred to as callbac
 #+END_VERSE
 
   So, this explains our original question: why the functions ~handle_call~, ~handle_cast~
-  are called as /callbacks/ -because they have to be implemented in the callback 
+  are called as /callbacks/ -because they have to be implemented in the callback
   modules. This has nothing to do with function being passed!
 
   Anyhow, we should complete the task we started and complete our toy ~GenServer~.

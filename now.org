@@ -1,12 +1,12 @@
 #+TITLE: Now
 #+OPTIONS: toc:nil num:nil creator:nil author:nil validate:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./css/style.css" />
+#+AUTHOR: Anurag Peshne
 
 #+INCLUDE: "../assets/ga.org"
 
 * Now
-1. Working on my Masters Thesis: [[https://github.com/anuragpeshne/gpu-cgoptimization-thesis][Enhancements to SIA Looping Constructs by Prefetching and Exploiting GPU]]
-2. Reading [[http://www.joyofclojure.com/][Joy Of Clojure]]
-3. Reading [[https://press.princeton.edu/titles/669.html][How to Solve it]], suggested by Rich Hickey.
+1. Reading [[https://www.oreilly.com/library/view/hands-on-machine-learning/9781491962282/][Hands-On Machine Learning with Scikit-Learn and TensorFlow]]
+2. Reading [[https://pragprog.com/book/dnvim2/practical-vim-second-edition][Practical Vim]]
 
 This /now page is inspired by [[http://sivers.org/nowff][Derek Sivers. What are you working on?]].

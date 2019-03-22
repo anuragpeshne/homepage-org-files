@@ -6,6 +6,7 @@
 #+HTML_HEAD: <script src="/js/keywords/drawGraph.js"></script>
 #+HTML_HEAD: <style> #content {max-width: 8000px !important;} </style>
 #+FILETAGS:  :keywords:programming-languages:
+#+AUTHOR: Anurag Peshne
 
 #+INCLUDE: "../../assets/ga.org"
 

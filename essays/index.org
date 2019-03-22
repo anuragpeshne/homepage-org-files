@@ -1,6 +1,7 @@
 #+TITLE: Essays
 #+OPTIONS: toc:nil num:nil creator:t author:nil
 #+INCLUDE: "../../assets/commonHead.org"
+#+AUTHOR: Anurag Peshne
 
 #+BEGIN_VERSE
 An essay is, generally, a scholarly piece of writing that gives the author's own
@@ -11,6 +12,7 @@ pamphlet, and a short story.
 |------------+-----------------------------------------|
 |       Date | Essay                                   |
 |------------+-----------------------------------------|
+| 2018-01-07 | [[./understanding-genserver.org][Understanding ~GenServer~]]               |
 | 2017-05-28 | [[file:./vim/1.org][Vim Tutorial]]                            |
 | 2016-12-01 | [[file:./reduction-direction.org][Reduction Direction]]                     |
 | 2016-10-30 | [[file:./tcp2c10k.org][TCP to C10k: HTTP Server Implementation]] |

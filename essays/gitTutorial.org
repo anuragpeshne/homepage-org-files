@@ -4,6 +4,7 @@
 #+OPTIONS: toc:t num:nil creator:t author:t tex:t date:t timestamp:nil
 #+INCLUDE: "../../assets/commonHead.org"
 #+FILETAGS:  :git:git-internals:unix:
+#+AUTHOR: Anurag Peshne
 
 #+INCLUDE: "../../assets/ga.org"
 #+HTML: <div id="draftTag">DRAFT</div>

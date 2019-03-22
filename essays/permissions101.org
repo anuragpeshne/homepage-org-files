@@ -3,6 +3,7 @@
 #+OPTIONS: toc:t num:t creator:t author:t tex:t date:t timestamp:nil
 #+INCLUDE: "../../assets/commonHead.org"
 #+FILETAGS:  :unix:permission:sudo:
+#+AUTHOR: Anurag Peshne
 
 #+INCLUDE: "../../assets/ga.org"
 #+HTML: <div id="draftTag">DRAFT</div>

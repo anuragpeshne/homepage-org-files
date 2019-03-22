@@ -3,6 +3,7 @@
 #+OPTIONS: toc:t num:nil creator:t author:t tex:t date:t timestamp:nil p:t
 #+INCLUDE: "../../assets/commonHead.org"
 #+FILETAGS:  :http:tcp:c10k
+#+AUTHOR: Anurag Peshne
 
 #+INCLUDE: "../../assets/ga.org"
 

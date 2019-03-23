@@ -52,7 +52,10 @@
   - [[file:./essays/index.org][/essays]] Rest of the essays
 
 * Notes
-  Bunch of notes to me.
+  Bunch of notes from me, to me.
+  - [[file:./notes/dns.org][How DNS work]]
+  - [[file:./notes/elixir.org][Elixir Lang]]
+  - [[file:./notes/data-structures/tree.org][data-structures/tree]]
   - [[file:./notes/plp.org][Programming Language Principles]]
   - [[file:./notes/concurrentProg.org][Concurrent Programming]]
   - [[file:./notes/computerNetwork.org][Computer Networks]]

@@ -2,7 +2,9 @@
 #+OPTIONS: toc:nil num:nil creator:t author:nil timestamp:nil
 #+INCLUDE: "../assets/commonHead.org"
 #+INCLUDE: "../assets/ga.org"
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./gameoflife/gol.css">
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="css/style.css" />
+#+HTML_HEAD: <script src="./gameoflife/gol.js"></script>
 #+EXPORT_OPTIONS: comments:t
 #+AUTHOR: Anurag Peshne
 
@@ -10,19 +12,15 @@
 <script type="text/javascript">
 window.onload = function() {
     var contentWidth = document.getElementById("content").offsetWidth;
-    var iframe = document.createElement('iframe');
-    iframe.style.border = "none";
-    iframe.style.width = "100%";
-    iframe.style.height="300px";
-    iframe.src="./gameoflife/embeded.html?width=" + (contentWidth * 9.3 /10) +
-               "&height=" + (Math.min(contentWidth, 300) * 9.3 / 10) +
-               "&speed=2000";
-
     var gol_container = document.getElementById("gameoflife_container");
-    gol_container.appendChild(iframe);
+    gol_container.style.height = "300px";
+    var delay = 2000;
+    var preset = "random";
+    var game = new GameOfLife(gol_container, preset)
+    game.play(delay);
 };
 </script>
-<div id="gameoflife_container"></div>
+<a href="./gameoflife/index.html"><div id="gameoflife_container"></div></a>
 #+END_export
 * Hello
   My name is Anurag Peshne. I'm interested in Programing Languages, Distributed

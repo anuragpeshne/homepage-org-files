@@ -1,0 +1,16 @@
+#+TITLE: Org Mode: the Ultimate Note Taking Software
+#+DATE: 2019-09-30
+#+OPTIONS: toc:nil num:nil creator:t author:t tex:t timestamp:nil
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+#+FILETAGS:  :orgmode:tutorial:
+#+AUTHOR: Anurag Peshne
+
+Org mode is an Emacs major mode for capturing thoughts and organizing life. It
+essentially consists of a markup language and numerous integrations with the Emacs
+text editor which gives org mode its super powers.
+
+Org files are plain text files which can be manipulated using any text editor.
+And there are packages for /rich/ editing of org files for most of the popular text
+editors. But nothing comes close to the power that Emacs ecosystem provides. I wouldn't
+shy of recommending Emacs just as an Org mode client if it's not the text editor
+of your choice.

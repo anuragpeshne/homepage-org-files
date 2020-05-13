@@ -1,0 +1,74 @@
+#+TITLE: Binary Search, Firewall and Bed Bugs
+#+DATE: 2020-05-12
+#+OPTIONS: toc:nil num:t creator:t author:t tex:t
+#+INCLUDE: "../../assets/commonHead.org"
+#+FILETAGS:  :life:applied-algorithm:
+#+AUTHOR: Anurag Peshne
+
+#+INCLUDE: "../../assets/ga.org"
+
+* Arrival
+  It is mid of 2020 and we are living in extraordinary times due to COVID-19. I
+  haven't left the house except for groceries since early March. And just when one
+  might think that nothing more remarkable than a pandemic can happen, sometime during
+  end of March I started seeing some red bumps on my toes. Yes, bloody soul sucking,
+  hope crushing, the almighty Bed Bugs decided to raid me in the middle of a pandemic!
+
+** Denial
+   My first reaction to bites was of denial. There was no way of getting infected
+   during a lockdown. I've experienced bed bugs before while I was a grad student
+   and I had bought a piece of used furniture. We had to go through three rounds of
+   pest control for complete extermination and we were locked out of the apartment
+   for the complete day each of the three times. Since this time there was no exchange
+   of furniture, luggage or people in the apartment, there was no way for those
+   little demons to infect my apartment. So I decided to go Ostrich - stick my head
+   in the sand and pretend there is no problem, until...the next morning.
+
+** Detection
+   The next morning the number of red bumps on my toes increased and had started
+   itching. If this was indeed bed bug infestation, I had to react and do it fast since
+   just like an exponential graph things could go out of hand in just few steps.
+
+   The first step was to determine if this was really a bite and not an allergic reaction
+   or something else. So that night I slept with body fitted full sleeves clothes
+   and with socks on, leaving just my face and hands exposed. The next morning
+   unsurprisingly and to my disappointment I saw similar red bumps
+   in between my fingers. Although I had a sense of doom that next few weeks of my
+   life are not going to be easy, I also had some excitement - I could control
+   their behavior! I could change a input in the function to change the output!
+   I wondered if I slept that night exposing both hands and feet, would the insects
+   go back biting the feet or their last successful attack ground - hands.
+
+   So these were insect bites and not allergy or rashes. The bites looked similar
+   to bed bug bites but to be sure I had to catch one the insect red handed (no
+   pun indented 😢), or detect some other signs such as poop stains.
+
+* War
+  It's the beginning of April, COVID-19 stay at home order is in effect, I think
+  my apartment has got non zero number of bed bug(s), do I invite a stranger at
+  home for pest control (and potentially be kicked out of the apartment for 8 hours)
+  or live with bed bugs[fn:1] (with no social distancing). I decided to play safe
+  with the COVID-19 virus and declared war on the bugs.
+
+  Once you accept the problem it is much easier to fight it. I had a feeling that
+  the bugs were not so invincible as I had thought them to be. Maybe I don't need
+  to nuke the complete apartment for this early infestation[fn:2]
+
+** TODO Know your Enemy
+   Bed bugs are neural network with reward function linked to human blood equipped
+   with:
+   1. CO₂ sensor - to detect CO₂ released from breathing to locate a human
+   2. Pheromone sensor - to follow a path marked by other bugs
+   3. and maybe a light sensor - to detect darkness
+   I know this is not a complete and mostly an incorrect description of a bed bug.
+   But this is good enough for applying our algorithms.
+
+** TODO Washing with Heat
+   - can travel [[https://www.epa.gov/bedbugs/how-find-bed-bugs][5-20 feet]]
+
+** TODO Air Gap, Firewall
+   - horizontal scalling
+** TODO Inner Ring
+
+[fn:1] In their defense, bed bugs are not known to carry any pathogens. They might suck your soul, turn you into a sleepless zombie but leave your life pretty safe.
+[fn:2] Maybe it's too early to declare victory - the bed bugs can survive up to a year without food.

@@ -9,7 +9,7 @@
 
 * Arrival
   It is mid of 2020 and we are living in extraordinary times due to COVID-19. I
-  haven't left the house except for groceries since early March. And just when one
+  haven't left my apartment except for groceries since early March. And just when one
   might think that nothing more remarkable than a pandemic can happen, sometime during
   end of March I started seeing some red bumps on my toes. Yes, bloody soul sucking,
   hope crushing, the almighty Bed Bugs decided to raid me in the middle of a pandemic!
@@ -36,7 +36,7 @@
    in between my fingers. Although I had a sense of doom that next few weeks of my
    life are not going to be easy, I also had some excitement - I could control
    their behavior! I could change a input in the function to change the output!
-   I wondered if I slept that night exposing both hands and feet, would the insects
+   I wondered if I sleep that night exposing both hands and feet, would the insects
    go back biting the feet or their last successful attack ground - hands.
 
    So these were insect bites and not allergy or rashes. The bites looked similar
@@ -52,19 +52,51 @@
 
   Once you accept the problem it is much easier to fight it. I had a feeling that
   the bugs were not so invincible as I had thought them to be. Maybe I don't need
-  to nuke the complete apartment for this early infestation[fn:2]
+  to nuke the complete apartment for this early infestation[fn:2].
 
-** TODO Know your Enemy
-   Bed bugs are neural network with reward function linked to human blood equipped
-   with:
-   1. CO₂ sensor - to detect CO₂ released from breathing to locate a human
+  I did a quick online search and found that washing clothes with high heat will
+  kill the bugs. I dumped everything -pillow covers, bed sheet, blankets- in the
+  washing machine and washed on "Hot" water settings. After drying them (again, on
+  high heat), I folded them nicely and kept them away because I decided to sleep
+  on the couch for few days. My plan was to stay away from the bed, starve the bugs
+  to death and then return. This was me being an Ostrich again - run 12 feet away
+  and again stick my head in the sand.
+
+  It did not work. The next morning I woke up with itching spots on my chest - sh*t
+  just got real.
+
+** Know your Enemy
+   The first step was to know everything about Bed bugs. It seems tackling bed bugs
+   is no less popular than some sport. There are pages and pages of online articles,
+   Youtube videos, blogs and websites. I found [[https://en.wikipedia.org/wiki/Bed_bug][Wikipedia]], [[https://www.cdc.gov/parasites/bedbugs/faqs.html][CDC FAQs]] and [[https://www.epa.gov/bedbugs/how-find-bed-bugs][EPA article]]
+   to be most concise.
+   Bed bugs are neural network with reward function linked to sucking human blood
+   and are equipped with:
+   1. CO₂ sensor - to detect Carbon Dioxide released from breathing to locate a human
    2. Pheromone sensor - to follow a path marked by other bugs
    3. and maybe a light sensor - to detect darkness
-   I know this is not a complete and mostly an incorrect description of a bed bug.
+   Apart from this:
+   - They will readily travel 5-20 feet from their shelter to feed - this explains the
+     shameful loss of the first battle of the couch.
+   - they can survive without food for several months.
+   I know this is nowhere to complete and mostly an incorrect description of a bed bug.
    But this is good enough for applying our algorithms.
 
-** TODO Washing with Heat
-   - can travel [[https://www.epa.gov/bedbugs/how-find-bed-bugs][5-20 feet]]
+** Options
+   From all of the articles heat seemed to be the most lethal weapon against the
+   bugs. But we need to apply heat directly to the bugs and for that we need to
+   find their hiding spot(s). Another interesting solution mentioned in several
+   users' post on Reddit, was DE.
+
+*** Diatomaceous Earth
+    Diatomaceous Earth or DE is powder made out of a naturally occurring rock.
+    Here's a line from Wikipedia that's interesting to us with respect to bed bugs:
+    #+BEGIN_QUOTE
+The fine powder adsorbs lipids from the waxy outer layer of the exoskeletons of\
+many species of insects; this layer acts as a barrier that resists the loss of water\
+vapour from the insect's body. Damaging the layer increases the evaporation of water\
+from their bodies, so that they dehydrate, often fatally.
+    #+END_QUOTE
 
 ** TODO Air Gap, Firewall
    - horizontal scalling

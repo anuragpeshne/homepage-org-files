@@ -1,6 +1,6 @@
 #+TITLE: Binary Search, Firewall and Bed Bugs
 #+DATE: 2020-05-12
-#+OPTIONS: toc:nil num:t creator:t author:t tex:t
+#+OPTIONS: toc:nil num:t creator:nil author:t tex:t
 #+INCLUDE: "../../assets/commonHead.org"
 #+FILETAGS:  :life:applied-algorithm:
 #+AUTHOR: Anurag Peshne
@@ -75,12 +75,11 @@
    1. CO₂ sensor - to detect Carbon Dioxide released from breathing to locate a human
    2. Pheromone sensor - to follow a path marked by other bugs
    3. and maybe a light sensor - to detect darkness
-   Apart from this:
+   I know this is nowhere to complete and mostly an incorrect description of a bed bug.
+   But this is good enough for applying our algorithms. Apart from that:
    - They will readily travel 5-20 feet from their shelter to feed - this explains the
      shameful loss of the first battle of the couch.
    - they can survive without food for several months.
-   I know this is nowhere to complete and mostly an incorrect description of a bed bug.
-   But this is good enough for applying our algorithms.
 
 ** Options
    From all of the articles heat seemed to be the most lethal weapon against the
@@ -90,11 +89,11 @@
 
 *** Diatomaceous Earth
     Diatomaceous Earth or DE is powder made out of a naturally occurring rock.
-    Here's a line from Wikipedia that's interesting to us with respect to bed bugs:
+    Here's a line from Wikipedia that's interesting with respect to bed bugs:
     #+BEGIN_QUOTE
-The fine powder adsorbs lipids from the waxy outer layer of the exoskeletons of\
-many species of insects; this layer acts as a barrier that resists the loss of water\
-vapour from the insect's body. Damaging the layer increases the evaporation of water\
+The fine powder adsorbs lipids from the waxy outer layer of the exoskeletons of
+many species of insects; this layer acts as a barrier that resists the loss of water
+vapour from the insect's body. Damaging the layer increases the evaporation of water
 from their bodies, so that they dehydrate, often fatally.
     #+END_QUOTE
 

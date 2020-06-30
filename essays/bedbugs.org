@@ -99,7 +99,15 @@ from their bodies, so that they dehydrate, often fatally.
 
 ** TODO Air Gap, Firewall
    - horizontal scalling
+   - Moved bed away from the wall. Secured all entry/exit points to bed using DE.
+   - Binary Search - either bed bugs on the bed or on anything except bed.
+   - Slept on bed, got bitten, no big deal. Sleep on the couch for few days.
+   - Slept on couch, got bitten again. Bed bugs on bed *and* anything except bed 😱
+
 ** TODO Inner Ring
+   - 1 more chance before calling in "professionals" -- steamer and bed bug cover
+   - thought of taking one more chance. Folded the bed sheets inside and created
+     "inner ring"
 
 [fn:1] In their defense, bed bugs are not known to carry any pathogens. They might suck your soul, turn you into a sleepless zombie but leave your life pretty safe.
 [fn:2] Maybe it's too early to declare victory - the bed bugs can survive up to a year without food.

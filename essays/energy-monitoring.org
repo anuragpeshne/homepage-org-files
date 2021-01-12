@@ -5,7 +5,7 @@
 #+FILETAGS: :raspberrypi:grafana:
 #+AUTHOR: Anurag Peshne
 
-Recently, I became very interested in measuring the electricity consumption
+Recently, I became interested in measuring the electricity consumption
 of electronic devices at my home and, in particular, my computer. Computer power
 supplies are typically rated from 400W to 800W. I wanted to see how much power is
 actually needed for day to day computing - writing code, browsing internet, playing
@@ -34,9 +34,9 @@ I measure everything and find out if it still makes sense.
   computer, this was simply an overkill and would not have provided the fine grained
   monitoring I needed (and I'm a little scared of messing with AC power).
 
-  I finally settled on TP Link Power Strip: [[https://www.kasasmart.com/us/products/smart-plugs/kasa-smart-wi-fi-power-strip-hs300][HS300]]. This /smart/ power strip has
+  I finally settled on TP-Link Power Strip: [[https://www.kasasmart.com/us/products/smart-plugs/kasa-smart-wi-fi-power-strip-hs300][HS300]]. This /smart/ power strip has
   the usual /smart/ plug features like they can be controlled using a mobile app, but
-  it also has enery monitoring. And most importantly there are some awesome projects
+  it also has energy monitoring. And most importantly there are some awesome projects
   on Github - [[https://github.com/python-kasa/python-kasa][python-kasa]], [[https://github.com/GadgetReactor/pyHS100][pyHS100]] - that have reverse engineered the communication
   protocol and provide a nice interface to talk to them.
 
@@ -49,6 +49,48 @@ I measure everything and find out if it still makes sense.
   get extracted, stored and visualized.
 
 ** Polling HS300
+   The project [[https://github.com/python-kasa/python-kasa][python-kasa]] provides a nice interface to control TP-Link devices but there's
+   an [[https://github.com/python-kasa/python-kasa/issues/64][issue]] with quering energy monitor of child plugs. That's why I used the project [[https://github.com/GadgetReactor/pyHS100][pyHS100]]
+   which seems like an older version of the python-kasa project. I added a cronjob to query
+   the powerstrip every 5 minutes and dump the data in a text file, using a simple bash script:
+   #+BEGIN_SRC bash
+#! /bin/bash
+
+power=$(/home/pi/.local/bin/pyhs100 --strip --host <IP of the powerstrip> emeter | tail -n 1)
+timestamp=$(date +%s)
+
+echo -e "$timestamp, $power"
+   #+END_SRC
+   This creates a bulky line for each sample it records and there is certainly a
+   lot of room to compress it. I'm currently sampling it every 5 minutes, so I don't
+   mind it, but if you are planning to sample it every minute or every few seconds,
+   you might want to trim it down.
+
+** Grafana Datasource
+   I'm using Grafana to visualize this data to see trends in usage over time. We
+   can dump all of the data into one of the Datasource that is supported by default
+   by Grafana but I did not like that extra step for such simple data. So I wrote
+   [[https://github.com/anuragpeshne/grafana-kasa-power-strip][my own backend datasource]] that directly serves Grafana, data from the logs we
+   collected. This uses the [[https://grafana.com/grafana/plugins/grafana-simple-json-datasource][SimpleJson]] datasource plugin.
+
+* Results
+  The results are informative and nothing less than an eye opener. Some devices
+  ,like computers, charger, consume varying amount energy and some devices, like
+  lamps, consume constant energy. I might write a followup post just about consumption
+  of my computer running various workloads and applications. Here are a couple that
+  I found interesting:
+** Desktop: Coding vs video games
+    #+CAPTION: In the first half the computer was used for coding using a simple text editor with light browsing.
+    #+NAME:   fig:desktop
+    [[../../assets/energyMonitoring/desktop.png]]
+** Monitor
+    #+CAPTION: Energy consumption of my monitor is constant, until I increased the brightness from 15% to 20%
+    #+NAME:   fig:desktop
+    [[../../assets/energyMonitoring/monitor.png]]
+** Phone charging
+    #+CAPTION: IPhone getting charged using the stock charger.
+    #+NAME:   fig:desktop
+    [[../../assets/energyMonitoring/iphone_charging.png]]
 
 
 [fn:1] This figure uses Icons made by [[https://www.flaticon.com/authors/dinosoftlabs][DinosoftLabs]], [[https://www.flaticon.com/authors/freepik][Freepik]], [[https://www.flaticon.com/authors/icongeek26][Icongeek26]] from [[https://flaticon.com][www.flaticon.com]]

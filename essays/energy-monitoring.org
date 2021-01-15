@@ -111,5 +111,5 @@ echo -e "$timestamp, $power"
   iPhone charger. But none of this matters when you are sitting next to a 3KW space heater ;)
 
 
-[fn:1] I don't remember the exact statement very well but I suspect my teenage mind might have turned the scale from "monitor consumes a little more than desktop, to ,monitor consumes a lot more" to suit its demands.
+[fn:1] I don't remember the exact statement very well but I suspect my teenage mind might have turned the scale from "monitor consumes a little more than desktop, to, monitor consumes a lot more" to suit its demands.
 [fn:2] This figure uses Icons made by [[https://www.flaticon.com/authors/dinosoftlabs][DinosoftLabs]], [[https://www.flaticon.com/authors/freepik][Freepik]], [[https://www.flaticon.com/authors/icongeek26][Icongeek26]] from [[https://flaticon.com][www.flaticon.com]]

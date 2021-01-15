@@ -56,9 +56,9 @@ window.onload = function() {
    Rest of the projects can be found at my github repo.
 
 * Essays
+  - [[file:./essays/energy-monitoring.html][Energy Monitoring using Smart plug and Raspberry Pi]]
   - [[file:./essays/understanding-genserver.html][Understanding ~GenServer~]]
   - [[file:./essays/vim/1.org][Vim Tutorials]]
-  - [[file:./essays/tcp2c10k.org][TCP to C10k: HTTP Server Implementation]]
   - [[file:./essays/gitTutorial.org][Git Tutorial]]
   - [[file:./essays/permissions101.org][Unix Permissions 101]]
   - [[file:./essays/keywords.org][Keywords]]

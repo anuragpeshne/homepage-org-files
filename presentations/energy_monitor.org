@@ -1,0 +1,127 @@
+#+TITLE:     Energy Monitoring using Smart plug and Raspberry Pi
+#+AUTHOR:    Anurag Peshne <anpeshne>
+#+EMAIL:     anpeshne@microsoft.com
+#+DATE:      2021-03-12 Fri
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t date:nil
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+LATEX_HEADER: \setbeamertemplate{navigation symbols}{}
+#+LATEX_HEADER: \RequirePackage{fancyvrb}
+#+LATEX_HEADER: \DefineVerbatimEnvironment{verbatim}{Verbatim}{fontsize=\scriptsize}
+#+BEAMER: \setbeamertemplate{navigation symbols}{}
+
+* Struct 1
+** Motivation
+*** How much energy does my computer /really/ consume?
+#+BEAMER: \pause
+**** Peripherals :A_block:
+:PROPERTIES:
+:BEAMER_COL: 0.48
+:BEAMER_ENV: block
+:END:
+#+BEAMER: \pause
+#+NAME: Power Supply
+#+ATTR_LATEX: :width .2\textwidth
+[[./images/power-supply.png]]
+
+#+BEAMER: \pause
+#+NAME: Microprocessors
+#+ATTR_LATEX: :width .2\textwidth
+[[./images/microprocessor.png]]
+
+#+BEAMER: \pause
+#+NAME: GPU
+#+ATTR_LATEX: :width .2\textwidth
+[[./images/gpu.png]]
+
+#+BEAMER: \pause
+**** Other Electronics :B_block:
+:PROPERTIES:
+:BEAMER_COL: 0.48
+:BEAMER_ENV: block
+:END:
+#+BEAMER: \pause
+#+NAME: Phone Charger
+#+ATTR_LATEX: :width .2\textwidth
+[[./images/phone-charger.png]]
+
+#+BEAMER: \pause
+#+NAME: Router
+#+ATTR_LATEX: :width .2\textwidth
+[[./images/wifi-router.png]]
+
+#+BEAMER: \pause
+#+NAME: Lamp
+#+ATTR_LATEX: :width .2\textwidth
+[[./images/lamp.png]]
+
+*** Hardware
+#+BEAMER: \pause
+**** Kill A Watt    :A_block:
+:PROPERTIES:
+:BEAMER_COL: 0.48
+:BEAMER_ENV: block
+:END:
+#+NAME: Phone Charger
+#+ATTR_LATEX: :width .4\textwidth
+[[./images/kill-a-watt.jpg]]
+
+#+BEAMER: \pause
+**** Smart Plug     :B_block:
+:PROPERTIES:
+:BEAMER_COL: 0.48
+:BEAMER_ENV: block
+:END:
+#+NAME: Phone Charger
+#+ATTR_LATEX: :width .7\textwidth
+[[./images/kasa_strip.jpg]]
+
+#+BEAMER: \pause
+Programmable Interface:
+- [[https://github.com/python-kasa/python-kasa][python-kasa]]
+- [[https://github.com/GadgetReactor/pyHS100][pyHS100]]
+
+*** Plan
+#+NAME: Arch
+#+ATTR_LATEX: :width .9\textwidth
+[[./images/arch.png]]
+
+*** Results
+#+CAPTION: Coding vs Video Games
+#+NAME: Arch
+#+ATTR_LATEX: :width \textwidth
+[[./images/desktop.png]]
+
+*** Results
+#+CAPTION: Monitor
+#+NAME: Arch
+#+ATTR_LATEX: :width \textwidth
+[[./images/monitor.png]]
+
+*** Results
+#+CAPTION: Phone Charging
+#+NAME: Arch
+#+ATTR_LATEX: :width \textwidth
+[[./images/iphone_charging.png]]
+
+*** Live
+- Start data server
+- Start Grafana server:
+  #+begin_src bash
+docker run -d \
+    --name=grafana \
+    -p 3000:3000 \
+    -e "GF_INSTALL_PLUGINS=grafana-simple-json-datasource" \
+    grafana/grafana
+  #+end_src
+
+*** Questions
+
+*** Thanks![fn:1]
+**** Links:
+  - Blog: [[https://anuragpeshne.github.io/essays/energy-monitoring][anuragpeshne.github.io/essays/energy-monitoring]]
+  - Grafana Datasource Server: [[https://github.com/anuragpeshne/grafana-kasa-power-strip][github.com/anuragpeshne/grafana-kasa-power-strip]]
+
+
+[fn:1] This presentation uses Icons made by [[https://www.flaticon.com/authors/smashicons][Smashicons]], [[https://www.freepik.com][Freepik]], [[https://www.flaticon.com/authors/xnimrodx][xnimrodx]], [[https://www.flaticon.com/authors/linector][Linector]], [[https://www.flaticon.com/authors/nikita-golubev][Nikita Golubev]] from [[https://www.flaticon.com/][Flaticon.com]]

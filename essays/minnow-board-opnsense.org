@@ -1,0 +1,72 @@
+#+TITLE: OPNsense on MinnowBoard
+#+DATE: 2022-03-30
+#+OPTIONS: toc:t num:nil creator:nil author:t tex:t date:t timestamp:nil
+#+INCLUDE: "../../assets/commonHead.org"
+#+FILETAGS: :opnsense:minnowboard:
+#+AUTHOR: Anurag Peshne
+
+* The Garage and MinnowBoard
+  One of the most nice perk of working for Microsoft is access to the [[https://en.wikipedia.org/wiki/Microsoft_Garage][Microsoft Garage]].
+  It is a maker space with an immensely helpful community around it. Recently, in
+  one of the "spring cleaning" event, where they got rid of old hardware, I got
+  my hands on MinnowBoard. It is a x86 based single board computer.
+
+  <TODO>MinnowBoard Picture with labels
+
+  It has a Gigabit ethernet port and a USB2.0 port. I wanted to play around
+  with one of the /advanced/ firewall servers, so this was a perfect opportunity
+  for me to try it out on the MinnowBoard
+
+* Installation
+  Creating installation usb drive is pretty straightforward, you can download the latest
+  image of OPNsense from the [[https://opnsense.org/download/][official page]] and use some utility to flash OS images to
+  the flash drive or use the ~dd~ command.
+
+** Booting Issues
+   MinnowBoard can boot from various sources including USB drive, network bases Pxe installation,
+   SD card and SATA drive. I got two boards from the event but both of them had distinct
+   issues. One of the two could not boot off of a USB or SD card, so it would always get
+   into the default interactive script mode. The other could boot from the USB drive
+   but had damaged SD card slot. So, the only option for installation were either a SATA
+   drive or another USB drive.
+
+   Since I did not had a spare SATA SSD at that time, I tried installing OPNsense on
+   board 2 on a USB2 drive. Then when I tried to boot it from the installed drive,
+   it turned out that the board can boot only from the white USB1 port.
+
+** Firmware Upgrade
+   I got a little upset and decided to take a break, I had already spent a little too
+   much time in trying different combinations of USB drives, installation media and
+   configurations.
+
+   The next day when I had already given up on idea of installing OPNsense, I decided
+   to upgrade the firmware for no reason except to see how it's done. I had never upgraded
+   firmware on a SBC before. I downloaded the latest firmware release from the [[https://www.intel.com/content/www/us/en/developer/articles/tool/minnowboard-maxturbot-uefi-firmware.html][Intel's website]].
+   Followed the [[https://www.youtube.com/watch?v=gCmcRPHwlTo][instructions]]:
+   1. copy the ~.efi~ files and the upgrade utility to USB drive
+   2. Determine the current firmware type (i32 vs x86)
+   3. Use the appropriate utility and select target firmware version
+   4. Upgrade!
+   Here are the commands I used for reference:
+   #+BEGIN_SRC bash
+fs0:/
+cd firmware
+./i32utility ./firmware/x86latestversion.efi
+   #+END_SRC
+
+   I tried this on Board 1 since it couldn't boot from a USB drive. So it was first
+   in line to be a ginnie pig. Fortunately, for me and board 1, the upgrade was successful
+   and the board was not completely bricked. It was able to turn on and was now able
+   to boot from a USB!
+
+** Installing OPNsense
+   The installation went smoothly after that. I was able to choose SD as the destination
+   for installation and the board could smoothly boot from the SD card
+
+* Running OPNsense
+** CPU Utilization Issue
+** Configuration and Services
+** Performance
+** Power Consumption
+
+* Final Thoughts

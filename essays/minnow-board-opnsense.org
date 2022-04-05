@@ -76,23 +76,34 @@ cd firmware
 
 * Running OPNsense
 ** Configuration and Services
+- Before OPNsense
 #+BEGIN_SRC artist
-    Before OPNsense
-    +-----+       +-------------------------------+
-    |ISP  |  ---> | Modem + Router all in one     |
-    +-----+       +-------------+-----------------+
-                  | Wireless AP | Router          |
-                  | (on)        | (Wired host     |
-                  |             | connected here) |
-                  +-------------+-----------------+
-
-
-    After OPNsense
-  +-----+
-  | ISP |  ----> +---------------------------+
-  +-----+        | Modem + Router all in one |
-                 +---------------------------+
-                 |
+  +----------+          +-------------------------------+
+  |          |          | Modem + Router                |
+  |  ISP     |---------→| (all-in-one)                  |
+  |          |          +-------------+-----------------+
+  +----------+          | Wireless AP | Router          |
+                        | (on)        | (Wired hosts    |
+                        |             | connected here) |
+                        +-------------+-----------------+
+#+END_SRC
+- After Installing OPNsense
+#+BEGIN_SRC artist
+  +----------+          +-------------------------------+
+  |          |          | Modem + Router                |
+  |  ISP     |---------→| (all-in-one)                  |
+  |          |          +-------------+-----------------+        +---------------+
+  +----------+          | Wireless AP | Router          |        | MinnowBoard   |
+                        | (off)       | (MinnowBoard    |-------→| running       |
+                        |             | connected here) |        | OPNsense      |
+                        +-------------+-----------------+        +---------------+
+                                                                          |
+                                                                          ↓
+                                                      +-------------+----------------+
+                                                      | Wireless AP | Router         |
+                                                      | (on)        | (Wired hosts   |
+                                                      |             | connected here |
+                                                      +-------------+----------------+
 #+END_SRC
 ** CPU Utilization Issue
    The board was running OPNsense but it was slow. Network requests were taking
@@ -111,9 +122,10 @@ cd firmware
 ** Performance
 *** TODO ~iperf~ using Gigabit switch
 ** Power Consumption
-#+CAPTION: Power Consumption using USB power meter.
+#+CAPTION: Power Consumption while running OPNsense.
 #+ATTR_HTML: :width 500px
 [[../assets/minnowBoardOpnsense/powerUsage.jpg]]
+** Idle Temperature
 
 * Final Thoughts
   - OPNsense is a secure, FreeBSD based firewall with frequent updates.

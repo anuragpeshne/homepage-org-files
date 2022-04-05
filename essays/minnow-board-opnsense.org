@@ -1,9 +1,14 @@
 #+TITLE: OPNsense on MinnowBoard
 #+DATE: 2022-03-30
-#+OPTIONS: toc:t num:nil creator:nil author:t tex:t date:t timestamp:nil
+#+OPTIONS: toc:nil num:nil creator:nil author:t tex:t date:t timestamp:nil
 #+INCLUDE: "../../assets/commonHead.org"
 #+FILETAGS: :opnsense:minnowboard:
 #+AUTHOR: Anurag Peshne
+
+#+CAPTION: MinnowBoard Max
+#+ATTR_HTML: :width 500px
+[[../assets/minnowBoardOpnsense/minnowBoardBox.jpg]]
+
 
 * The Garage and MinnowBoard
   One of the nicest perk of working at Microsoft, that not many people know about,
@@ -12,52 +17,56 @@
   one of the "spring cleaning" event, where they got rid of old hardware, I got
   my hands on MinnowBoard. It is a x86 based single board computer.
 
-  <TODO>MinnowBoard Picture with labels
-
   It has a Gigabit ethernet port and a USB 3.0 port. I had been wanting to play
   with one of the /advanced/ firewalls after reading a couple of articles[fn:1],[fn:2]
-  from a long time. This board gave me a perfect opportunity to try out OPNsense
-  - an open source Firewall.
+  from a long time. This board gave me the perfect opportunity to try out OPNsense,
+  an open source Firewall and Routing software.
+
+  #+CAPTION: MinnowBoard Specs
+  #+ATTR_HTML: :width 500px
+  [[../assets/minnowBoardOpnsense/minnowBoardSpecs.jpg]]
 
 * Installation
-  Creating installation usb drive is pretty straightforward, you can download the latest
-  image of OPNsense from the [[https://opnsense.org/download/][official page]] and use one of the image flashing utility[fn:3]
+  Creating installation USB drive is pretty straightforward, you can download the latest
+  image of OPNsense from the [[https://opnsense.org/download/][official webpage]] and use one of the image flashing utility[fn:3]
   to flash OS images to the USB drive or use the ~dd~ command.
 
 ** Booting Issues
-   MinnowBoard can boot from various sources including USB drive, network bases Pxe installation,
+   MinnowBoard can boot from various sources including USB drive, PXE server,
    SD card and SATA drive. I got two boards from the event but both of them had distinct
    issues. One of the two could not boot off of a USB nor a SD card, so it would always get
-   into the default interactive script mode. The other could boot from the USB drive
-   but had damaged SD card slot. So, the only option for installation were either a SATA
-   drive or another USB drive.
+   into the default interactive script mode.
 
+   The other could boot from the USB drive but had damaged SD card slot. So, the
+   only option for installation were either a SATA drive or another USB drive.
    Since I did not have a spare SATA SSD at that time, I tried installing OPNsense
-   on the board 2 on a USB 3.0 drive. Then, when I tried to boot it from the installed drive,
-   it turned out that the board can boot only from the USB 2.0 port.
+   on the board 2 on a USB 3.0 drive. The installation went smoothly, but, when I
+   tried to boot it from the installed drive, it turned out that the board can boot
+   only from the USB 2.0 port.
 
 ** Firmware Upgrade
    I got a little upset and decided to take a break, I had already spent a little too
    much time in trying different combinations of USB drives, installation media and
    configurations.
 
-   The next day, when I had already given up on idea of installing OPNsense, I decided
-   to upgrade the firmware for no reason, except to see how it's done. I had never upgraded
-   firmware on a SBC before. I downloaded the latest firmware release from the [[https://www.intel.com/content/www/us/en/developer/articles/tool/minnowboard-maxturbot-uefi-firmware.html][Intel's website]].
+   The next day, when I had already given up on idea of installing and running OPNsense,
+   I decided to upgrade the firmware for no reason, except to see how it's done.
+   I had never upgraded firmware on a SBC before so this was a good opportunity to try it out.
+   I downloaded the latest firmware release from the [[https://www.intel.com/content/www/us/en/developer/articles/tool/minnowboard-maxturbot-uefi-firmware.html][Intel's website]].
    Followed the [[https://www.youtube.com/watch?v=gCmcRPHwlTo][instructions]]:
-   1. copy the ~.efi~ files and the upgrade utility to USB drive
-   2. Determine the current firmware type (i32 vs x86)
+   1. copy the ~.efi~ files and the upgrade utility to a USB drive
+   2. Determine the current firmware architecture (i32 vs x86)
    3. Use the appropriate utility and select target firmware version
    4. Upgrade!
    Here are the commands I used for reference:
    #+BEGIN_SRC bash
-fs0:/
+fs0:/  # this changes the current working directory to the USB drive root
 cd firmware
-./i32utility ./firmware/x86latestversion.efi
+./i32utility ./firmware/x86latestversion.efi # utility arch depends on the arch currently on the system and firmware arch depends on what we want
    #+END_SRC
 
    I tried this on Board 1 since it couldn't boot from a USB drive. So, it was first
-   in line to try out experiments. Fortunately, for me and board 1, the upgrade was successful
+   in line to try out experiments. Fortunately, for me and the board 1, the upgrade was successful
    and the board was not completely bricked. It was able to turn on and was now able
    to boot from a USB!
 
@@ -66,12 +75,31 @@ cd firmware
    for installation and the board could smoothly boot from the SD card
 
 * Running OPNsense
+** Configuration and Services
+#+BEGIN_SRC artist
+    Before OPNsense
+    +-----+       +-------------------------------+
+    |ISP  |  ---> | Modem + Router all in one     |
+    +-----+       +-------------+-----------------+
+                  | Wireless AP | Router          |
+                  | (on)        | (Wired host     |
+                  |             | connected here) |
+                  +-------------+-----------------+
+
+
+    After OPNsense
+  +-----+
+  | ISP |  ----> +---------------------------+
+  +-----+        | Modem + Router all in one |
+                 +---------------------------+
+                 |
+#+END_SRC
 ** CPU Utilization Issue
    The board was running OPNsense but it was slow. Network requests were taking
    forever to return and in some cases, packets were dropped. After looking at the
    health page, it was clear that this performance issue was due high CPU utilization.
    The CPU was active 97% to 100% all the time. This was the third time I decided
-   to give up on using this board for all of the workload in my home. I thought
+   to give up on using this board for running OPNsense. I thought
    that the board simply did not have enough resources to run OPNsense.
 
    The next day, I decided to push one last time by trying to get the utilization
@@ -80,23 +108,26 @@ cd firmware
    DHCP, the utilization drops. And that worked for me! After disabling the IPv6,
    the utilization dropped to 10%. Even after enabling other services, the utilization
    remains below 50%.
-** Configuration and Services
 ** Performance
 *** TODO ~iperf~ using Gigabit switch
 ** Power Consumption
+#+CAPTION: Power Consumption using USB power meter.
+#+ATTR_HTML: :width 500px
+[[../assets/minnowBoardOpnsense/powerUsage.jpg]]
 
 * Final Thoughts
   - OPNsense is a secure, FreeBSD based firewall with frequent updates.
-  - OPNsense gives more control and insight about home network, along with some useful features:
+  - OPNsense gives more control and insights about home network, along with some useful features:
     - ability to create VLANs
       - one use case could to keep trusted devices such as personal computer on
-        one network and other devices such as /smart/ TVs, personal assistants such as /Alexa/
+        one network and other devices, such as /smart/ TVs, voice assistants,
         on a different network.
     - network monitoring along with request and bandwidth monitoring
     - firewall and adblock
-    - ability to run VPN server - this is helpful while accessing public /open/ internet (example at airports/cafes)
+    - ability to run VPN server - this is helpful while accessing public /open/ WiFi (example at airports/cafes)
       and to access local resource without exposing them to the public internet
-  - MinnowBoard has enough /omph/ to run OPNsense. It can run at ~$xx per year.
+  - MinnowBoard is a capable and low power consuming way of running OPNsense.
+    It can run at ~$xx per year.
 
 [fn:1]: [[https://blog.codinghorror.com/because-everyone-still-needs-a-router/][Coding Horror/Because Everyone needs a router]]
 [fn:2]: [[https://news.ycombinator.com/item?id=26488960][HN Thread about avoiding consumer routers]]

@@ -54,16 +54,22 @@
    I had never upgraded firmware on a SBC before so this was a good opportunity to try it out.
    I downloaded the latest firmware release from the [[https://www.intel.com/content/www/us/en/developer/articles/tool/minnowboard-maxturbot-uefi-firmware.html][Intel's website]].
    Followed the [[https://www.youtube.com/watch?v=gCmcRPHwlTo][instructions]]:
-   1. copy the ~.efi~ files and the upgrade utility to a USB drive
-   2. Determine the current firmware architecture (i32 vs x86)
+   1. copy the ~.bin~ files and the upgrade utility (~.efi~) to a USB drive
+   2. Determine the current firmware architecture (ia32 vs x86)
    3. Use the appropriate utility and select target firmware version
    4. Upgrade!
    Here are the commands I used for reference:
    #+BEGIN_SRC bash
-fs0:/  # this changes the current working directory to the USB drive root
-cd firmware
-./i32utility ./firmware/x86latestversion.efi # utility arch depends on the arch currently on the system and firmware arch depends on what we want
+     fs0:  # this changes the current working directory to the USB drive root
+     cd firmware
+     # utility arch depends on the arch currently on the system and
+     # firmware arch depends on what we want
+     ./i32utility.efi ./firmware/x86latestversion.bin
    #+END_SRC
+
+  #+CAPTION: Firmware Upgrade
+  #+ATTR_HTML: :width 800px
+  [[../assets/minnowBoardOpnsense/firmwareUpgrade.jpg]]
 
    I tried this on Board 1 since it couldn't boot from a USB drive. So, it was first
    in line to try out experiments. Fortunately, for me and the board 1, the upgrade was successful
@@ -117,7 +123,7 @@ cd firmware
    low by maybe deactivating some of the /expensive/ services such as Intrusion Protection.
    After searching the internet, I found out that by disabling the IPv6 DHCP option,
    the utilization drops. And that worked for me! After disabling the DHCPv6
-   (Interfaces -> LAN -> IPv6 Configuration Type = None),
+   (~Interfaces -> LAN -> IPv6 Configuration Type = None~),
    the utilization dropped to 10%. Even after enabling other services, the utilization
    remained below 50%.
 ** Performance: ~iperf~

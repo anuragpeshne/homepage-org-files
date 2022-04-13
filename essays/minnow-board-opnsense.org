@@ -99,14 +99,14 @@ cd firmware
                         +-------------+-----------------+        +---------------+
                                                                           |
                                                                           ↓
-                                                      +-------------+----------------+
-                                                      | Wireless AP | Router         |
-                                                      | (on)        | (Wired hosts   |
-                                                      |             | connected here |
-                                                      +-------------+----------------+
+                                           +--------------+     +----------------+
+                                           | Wireless AP  |     | Switch         |
+                                           | (on)         |←----| (Wired hosts   |
+                                           |              |     | connected here)|
+                                           +--------------+     +----------------+
 #+END_SRC
 ** CPU Utilization Issue
-   The board was running OPNsense but it was slow. Network requests were taking
+   The board was now able to run OPNsense but it was slow. Network requests were taking
    forever to return and in some cases, packets were dropped. After looking at the
    health page, it was clear that this performance issue was due high CPU utilization.
    The CPU was active 97% to 100% all the time. This was the third time I decided
@@ -115,10 +115,11 @@ cd firmware
 
    The next day, I decided to push one last time by trying to get the utilization
    low by maybe deactivating some of the /expensive/ services such as Intrusion Protection.
-   After searching the internet, I found out that disabling the IPv6 option in the
-   DHCP, the utilization drops. And that worked for me! After disabling the IPv6,
+   After searching the internet, I found out that by disabling the IPv6 DHCP option,
+   the utilization drops. And that worked for me! After disabling the DHCPv6
+   (Interfaces -> LAN -> IPv6 Configuration Type = None),
    the utilization dropped to 10%. Even after enabling other services, the utilization
-   remains below 50%.
+   remained below 50%.
 ** Performance: ~iperf~
 #+BEGIN_SRC
 ------------------------------------------------------------
@@ -137,11 +138,11 @@ After introducing MinnowBoard-OPNsense, the max bandwidth I could get was 100 MB
 #+CAPTION: Power consumption while running OPNsense.
 #+ATTR_HTML: :width 500px
 [[../assets/minnowBoardOpnsense/powerUsage.jpg]]
-| Power Consumption      | ~ 5 W                 |
-| Energy Consumed / day  | ~ 0.12 kWh            |
-| Energy Consumed / year | ~ 43.8 kWh            |
+| Power Consumption      | ~ 5 W               |
+| Energy Consumed / day  | ~ 0.12 kWh          |
+| Energy Consumed / year | ~ 43.8 kWh          |
 | Energy Rate            | $0.095 / kWh [fn:4] |
-| Yearly cost            | < $5                  |
+| Yearly cost            | < $5                |
 ** Idle Temperature
 * Final Thoughts
   - OPNsense is a secure, FreeBSD based firewall with frequent updates.
@@ -151,7 +152,7 @@ After introducing MinnowBoard-OPNsense, the max bandwidth I could get was 100 MB
     - firewall and adblock
     - ability to run VPN server - this is helpful while accessing public /open/ WiFi (example at airports/cafes)
       and to access local resource without exposing them to the public internet
-  - The max bandwidth that I could get the MinnowBoard to pump is ~ 100 MBits / sec.
+  - The max bandwidth, that I could get the MinnowBoard to pump, is ~ 100 MBits / sec.
     This could be a deal breaker for some other users with ISP speed of > 100 MBits/sec.
   - MinnowBoard is a capable and low power consuming way of running OPNsense.
     It can run at ~$5 per year.
